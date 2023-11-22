@@ -1,21 +1,61 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-collapsable-tabview';
+import { StyleSheet, Text, View } from 'react-native';
+import {
+  Bar,
+  PagerView,
+  HeaderView,
+  TabView,
+  ScrollView,
+  FlashList,
+  TabProvider,
+} from 'react-native-collapsable-tabview';
+import { memo } from 'react';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <TabProvider>
+          <HeaderView>
+            <Bar tabs={['Hello', 'Hi']} />
+            <YourCustomView />
+          </HeaderView>
+
+          <PagerView>
+            {/*---------------------------*/}
+            <TabView label={'Hello'}>
+              <HeaderView>
+                <YourCustomView />
+                <Bar tabs={['Item1', 'Item2']} />
+              </HeaderView>
+
+              <PagerView>
+                <TabView label={'Item1'}>
+                  <ScrollView />
+                </TabView>
+                <TabView label={'Item2'}>
+                  <ScrollView />
+                </TabView>
+              </PagerView>
+            </TabView>
+            {/*---------------------------*/}
+            <TabView label={'Hi'}>
+              <FlashList renderItem={(_) => null} data={[]} />
+            </TabView>
+            {/*---------------------------*/}
+          </PagerView>
+      </TabProvider>
     </View>
   );
 }
+
+const YourCustomView = memo(function YourCustomView() {
+  return (
+    <View>
+      <Text>Your Custom View</Text>
+    </View>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
