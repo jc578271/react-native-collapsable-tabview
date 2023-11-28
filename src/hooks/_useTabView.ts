@@ -26,7 +26,9 @@ export const _useTabView = (isRoot?: boolean) => {
       tabs,
       animatedIndex,
       staticIndex,
-      pagerViewRef,
+      pagerViewRef: pagerViewRef as AnimatedRef<
+        PagerView & Animated.ScrollView
+      >,
       headerHeight,
       barHeight,
     }),
