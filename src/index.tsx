@@ -11,3 +11,4 @@ export { TabPager, type TabPagerProps } from "./TabPager";
 export { TabScrollView } from "./TabScrollView";
 export { TabFlashList } from "./TabFlashList";
 export { TabRefreshControl } from "./TabRefreshControl";
+export { ETabStatus } from "./types"

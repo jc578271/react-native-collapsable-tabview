@@ -13,6 +13,7 @@ import {
   type IRenderTabBarItem,
 } from "react-native-collapsable-tabview";
 import { memo } from "react";
+import { useAnimatedReaction } from "react-native-reanimated";
 
 const TabItem = memo(function TabItem({ item, ...props }: IRenderTabBarItem) {
   return (
@@ -163,9 +164,15 @@ const YourScrollView = memo(function YourScrollView({
 });
 
 const MyTabView = memo(function MyTabView() {
-  const { mounted } = useTabView();
+  const { status } = useTabView();
 
-  console.log(mounted);
+  useAnimatedReaction(
+    () => status.value,
+    (status) => {
+      console.log(status);
+    },
+    []
+  );
 
   return (
     <TabFlashList

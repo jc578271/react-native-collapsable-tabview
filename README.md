@@ -152,6 +152,20 @@ Name            | Type   | Required | Description         |
 --------------- |--------|----------|---------------------|
 ...FlashListProps   |  | no        | props of FlashList |
 
+### Hooks
+#### useTabView
+```js
+// wrap <TabView> brefore use this hook
+const { status } = useTabView();
+
+useAnimatedReaction(
+  () => status.value,
+  (status) => {
+    console.log(status);
+  },
+  []
+);
+```
 
 ## Contributing
 

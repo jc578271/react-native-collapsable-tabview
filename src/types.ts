@@ -37,11 +37,17 @@ export interface ITabView extends TabViewProps {
 }
 
 export interface IExternalTabView {
-  visible: Readonly<SharedValue<boolean>>;
-  mounted: boolean;
+  status: Readonly<SharedValue<ETabStatus>>;
 }
 
 export interface IItemLayout {
   left: number;
   width: number;
+}
+
+export enum ETabStatus {
+  UNMOUNTED = 0,
+  MOUNTED = 1,
+  INVISIBLE = 2,
+  VISIBLE = 3
 }

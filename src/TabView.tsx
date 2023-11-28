@@ -4,17 +4,17 @@ import React, {
   type PropsWithChildren,
   useContext,
   useMemo,
-  useState,
 } from "react";
 import type { IExternalTabView, ITabView, TabViewProps } from "./types";
+import { ETabStatus } from "./types";
 import { useTabRoot } from "./TabRoot";
 import { _useTabView } from "./hooks/_useTabView";
 import { useWindow } from "./hooks/useWindow";
 import Animated, {
-  runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
+  useSharedValue,
 } from "react-native-reanimated";
 import { ROOT_ID } from "./constant";
 
@@ -96,17 +96,26 @@ export const TabView = memo(function TabItem({
   );
 
   /* external values */
+  const status = useSharedValue<ETabStatus>(ETabStatus.UNMOUNTED);
   const visible = useDerivedValue(
     () => rootIndex.value === rootAnimatedIndex.value,
     []
   );
-  const [mounted, setMounted] = useState(false);
 
   useAnimatedReaction(
     () => visible.value,
     (visible) => {
-      if (!mounted && visible) {
-        runOnJS(setMounted)(true);
+      if (status.value === ETabStatus.UNMOUNTED && visible) {
+        status.value = ETabStatus.MOUNTED;
+        return;
+      }
+
+      if (status.value === ETabStatus.MOUNTED) {
+        if (visible) {
+          status.value = ETabStatus.VISIBLE;
+        } else {
+          status.value = ETabStatus.INVISIBLE;
+        }
       }
     },
     []
@@ -114,10 +123,9 @@ export const TabView = memo(function TabItem({
 
   const externalValue = useMemo(
     () => ({
-      visible,
-      mounted,
+      status,
     }),
-    [mounted]
+    []
   );
 
   if (tabViewId === ROOT_ID) {
