@@ -1,7 +1,7 @@
-import type { AnimatedRef, SharedValue } from 'react-native-reanimated';
+import type {AnimatedRef, SharedValue} from 'react-native-reanimated';
 import type PagerView from 'react-native-pager-view';
-import type { NativeScrollEvent } from 'react-native';
-import { type ReactNode } from 'react';
+import type {NativeScrollEvent} from 'react-native';
+import {type ReactNode} from 'react';
 
 export interface TabViewProps {
   label: string;
@@ -9,21 +9,35 @@ export interface TabViewProps {
 }
 
 export interface IProvider extends ITabView {
-  headerHeightMap: SharedValue<{ [id: string]: number }>;
-  barHeightMap: SharedValue<{ [id: string]: number }>;
   animatedScrollValue: SharedValue<number>;
   animatedHeight: SharedValue<number>;
-  scrollValueMap: SharedValue<{ [id: string]: number }>;
+  scrollValueMap: SharedValue<{[id: string]: number}>;
   onScroll: (keyName: string) => (e: NativeScrollEvent) => void;
 }
 
-export interface ITabView extends TabViewProps{
+export interface ITabView extends TabViewProps {
   currentTab: SharedValue<string | null>;
   tabs: SharedValue<string[]>;
+  parentTabs: SharedValue<string[]>;
   animatedIndex: SharedValue<number>;
+  parentAnimatedIndex: SharedValue<number>;
   staticIndex: SharedValue<number>;
+  barHeight: SharedValue<number>;
+  headerHeight: SharedValue<number>;
+  parentHeaderHeight: SharedValue<number>;
+  parentBarHeight: SharedValue<number>;
+  emptyHeaderHeight: SharedValue<number>;
+  emptyBarHeight: SharedValue<number>;
+  minBarTop: SharedValue<number>;
+  rootIndex: SharedValue<string>;
+  rootAnimatedIndex: SharedValue<string>;
   pagerViewRef: AnimatedRef<PagerView>;
   tabViewId: string;
+}
+
+export interface IExternalTabView {
+  visible: Readonly<SharedValue<boolean>>;
+  mounted: boolean;
 }
 
 export interface IItemLayout {

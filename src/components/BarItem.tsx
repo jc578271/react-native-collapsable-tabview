@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, {memo, useCallback} from 'react';
 import Animated, {
   runOnUI,
   type SharedValue,
@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
   type TouchableOpacityProps,
 } from 'react-native';
-import type { IItemLayout } from '../types';
-import { styles } from '../styles';
+import type {IItemLayout} from '../types';
+import {styles} from '../styles';
 
 const ATouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -24,7 +24,7 @@ export const BarItem = memo(function BarItem({
 }: {
   title: string;
   index: number;
-  itemLayout: SharedValue<{ [id: string]: IItemLayout }>;
+  itemLayout: SharedValue<{[id: string]: IItemLayout}>;
   tabWidth?: SharedValue<number>;
 } & TouchableOpacityProps) {
   const tabStyle = tabWidth
@@ -32,7 +32,7 @@ export const BarItem = memo(function BarItem({
         () => ({
           width: tabWidth.value,
         }),
-        []
+        [],
       )
     : undefined;
 
@@ -50,15 +50,14 @@ export const BarItem = memo(function BarItem({
       })(e.nativeEvent.layout.x, e.nativeEvent.layout.width);
       rest.onLayout?.(e);
     },
-    [rest.onLayout]
+    [rest.onLayout],
   );
 
   return (
     <ATouchableOpacity
       {...rest}
       style={[rest.style, styles.barItem, tabStyle]}
-      onLayout={onLayout}
-    >
+      onLayout={onLayout}>
       <Text>{title}</Text>
     </ATouchableOpacity>
   );
