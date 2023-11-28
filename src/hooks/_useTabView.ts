@@ -1,5 +1,6 @@
 import Animated, {
   type AnimatedRef,
+  type SharedValue,
   useAnimatedRef,
   useSharedValue,
 } from "react-native-reanimated";
@@ -8,7 +9,17 @@ import { makeid } from "../utils/makeid";
 import PagerView from "react-native-pager-view";
 import { ROOT_ID } from "../constant";
 
-export const _useTabView = (isRoot?: boolean) => {
+interface IUseTabView {
+  tabViewId: string;
+  currentTab: SharedValue<string | null>;
+  tabs: SharedValue<string[]>;
+  animatedIndex: SharedValue<number>;
+  pagerViewRef: AnimatedRef<PagerView & Animated.ScrollView>;
+  headerHeight: SharedValue<number>;
+  barHeight: SharedValue<number>;
+}
+
+export const _useTabView = (isRoot?: boolean): IUseTabView => {
   const tabViewId = useMemo(() => (isRoot ? ROOT_ID : makeid(6)), [isRoot]);
   const currentTab = useSharedValue<string | null>(null);
   const animatedIndex = useSharedValue<number>(0);
@@ -16,8 +27,7 @@ export const _useTabView = (isRoot?: boolean) => {
   const headerHeight = useSharedValue(0);
   const barHeight = useSharedValue(0);
   const tabs = useSharedValue<string[]>([]);
-  const pagerViewRef: AnimatedRef<PagerView & Animated.ScrollView> =
-    useAnimatedRef<PagerView & Animated.ScrollView>();
+  const pagerViewRef = useAnimatedRef<PagerView & Animated.ScrollView>();
 
   return useMemo(
     () => ({
@@ -26,9 +36,7 @@ export const _useTabView = (isRoot?: boolean) => {
       tabs,
       animatedIndex,
       staticIndex,
-      pagerViewRef: pagerViewRef as AnimatedRef<
-        PagerView & Animated.ScrollView
-      >,
+      pagerViewRef,
       headerHeight,
       barHeight,
     }),
