@@ -14,6 +14,7 @@ interface IUseTabView {
   currentTab: SharedValue<string | null>;
   tabs: SharedValue<string[]>;
   animatedIndex: SharedValue<number>;
+  staticIndex: SharedValue<number>;
   pagerViewRef: AnimatedRef<PagerView & Animated.ScrollView>;
   headerHeight: SharedValue<number>;
   barHeight: SharedValue<number>;
