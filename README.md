@@ -4,7 +4,7 @@ This is collapsable tabview package
 
 ## Installation
 
-## Dependencies
+#### Dependencies
 ```sh
 yarn add react-native-reanimated react-native-pager-view @shopify/flash-list
 ```
