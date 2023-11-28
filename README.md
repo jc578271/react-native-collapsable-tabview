@@ -22,11 +22,23 @@ import {
   useTabView
 } from 'react-native-collapsable-tabview';
 
+const TabItem = memo(function TabItem({ item, ...props }: IRenderTabBarItem) {
+  return (
+    <TouchableOpacity {...props}>
+      <Text>{item}</Text>
+    </TouchableOpacity>
+  );
+});
+
+const renderTabItem = (props: IRenderTabBarItem) => {
+  return <TabItem {...props} />;
+};
+
 export default function App() {
   return (
     <TabRoot>
       <TabHeader>
-        <TabBar />
+        <TabBar renderItem={renderTabItem}/>
       </TabHeader>
       <TabPager>
         <TabView label={'Hello'}>
@@ -49,12 +61,12 @@ export default function App() {
 ```js
 <TabRoot>
   <TabHeader>
-    <TabBar />
+    <TabBar renderItem={renderTabItem} />
   </TabHeader>
   <TabPager>
     <TabView label={'Hello'}>
       <TabHeader>
-        <TabBar />
+        <TabBar renderItem={renderTabItem} />
       </TabHeader>
       <TabPager>
         <TabView label={'Item 1'}>
@@ -90,14 +102,24 @@ HeaderComponent | Element  | No       | render Header Element |
 ...ViewProps    |          | No       | extends view props    |
 
 ### TabBar
+```ts
+type IRenderTabBarItem = {
+  item: string;
+  index: number;
+  active: Readonly<SharedValue<number>>;
+  onPress: () => void;
+  onLayout: (e: LayoutChangeEvent) => void;
+};
+```
 #### Props
 Name            | Type                                          | Required | Description            |
---------------- |-----------------------------------------------|----------|------------------------|
-display         | 'sameTabsWidth', 'minWindowWidth' , 'default' | No       | display Tab Bar        |
-horizontalGap   | number                                        | No       | horizontal gap of tabs |
-verticalGap     | number                                        | No       | vertical gap of tabs   |
-underlineStyle  | ViewStyle                                     | No       | style of underline     |
-tabBarStyle     | ViewStyle                                     | No       | style of tab bar       |
+--------------- |-----------------------------------------------|-----|------------------------|
+renderItem      | (params: IRenderTabBarItem ) => ReactElement     | Yes             | render tab bar item    |
+display         | 'sameTabsWidth', 'minWindowWidth' , 'default' | No  | display Tab Bar        |
+horizontalGap   | number                                        | No  | horizontal gap of tabs |
+verticalGap     | number                                        | No  | vertical gap of tabs   |
+underlineStyle  | ViewStyle                                     | No  | style of underline     |
+tabBarStyle     | ViewStyle                                     | No  | style of tab bar       |
 
 ### TabPager
 #### Methods

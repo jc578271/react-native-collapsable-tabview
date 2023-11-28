@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   TabRoot,
   TabHeader,
@@ -9,9 +9,22 @@ import {
   TabView,
   TabFlashList,
   TabScrollView,
-  useTabView
-} from 'react-native-collapsable-tabview';
-import { memo } from 'react';
+  useTabView,
+  type IRenderTabBarItem,
+} from "react-native-collapsable-tabview";
+import { memo } from "react";
+
+const TabItem = memo(function TabItem({ item, ...props }: IRenderTabBarItem) {
+  return (
+    <TouchableOpacity {...props}>
+      <Text>{item}</Text>
+    </TouchableOpacity>
+  );
+});
+
+const renderTabItem = (props: IRenderTabBarItem) => {
+  return <TabItem {...props} />;
+};
 
 export default function App() {
   return (
@@ -19,83 +32,86 @@ export default function App() {
       <TabRoot>
         <TabHeader
           HeaderComponent={
-            <View style={{height: 50, backgroundColor: 'blue'}} />
+            <View style={{ height: 50, backgroundColor: "blue" }} />
           }
-          style={{flexDirection: 'row', backgroundColor: 'cyan'}}>
+          style={{ flexDirection: "row", backgroundColor: "cyan" }}
+        >
           <Text>OKOK</Text>
-          <TabBar display={'sameTabsWidth'} />
+          <TabBar renderItem={renderTabItem} display={"sameTabsWidth"} />
         </TabHeader>
 
         <TabPager>
           {/*    /!*---------------------------*!/*/}
-          <TabView label={'Hellofefefef'}>
+          <TabView label={"Hellofefefef"}>
             <TabHeader HeaderComponent={<YourCustomView />}>
-              <TabBar />
+              <TabBar renderItem={renderTabItem} />
             </TabHeader>
 
             <TabPager>
-              <TabView label={'Item1'}>
+              <TabView label={"Item1"}>
                 <TabScrollView>
-                  <YourScrollView text={'Your scrollView 1'} />
+                  <YourScrollView text={"Your scrollView 1"} />
                 </TabScrollView>
               </TabView>
-              <TabView label={'Item2'}>
+              <TabView label={"Item2"}>
                 <TabScrollView>
-                  <YourScrollView text={'Your scrollView 2'} />
+                  <YourScrollView text={"Your scrollView 2"} />
                 </TabScrollView>
               </TabView>
             </TabPager>
           </TabView>
           {/*    /!*---------------------------*!/*/}
-          <TabView label={'Hi'}>
+          <TabView label={"Hi"}>
             <TabHeader
-              HeaderComponent={<YourCustomView height={70} color={'green'} />}>
-              <TabBar />
+              HeaderComponent={<YourCustomView height={70} color={"green"} />}
+            >
+              <TabBar renderItem={renderTabItem} />
             </TabHeader>
             <TabPager>
-              <TabView label={'Item3'}>
+              <TabView label={"Item3"}>
                 <TabHeader
                   HeaderComponent={
-                    <YourCustomView height={100} color={'red'} />
-                  }>
-                  <TabBar />
+                    <YourCustomView height={100} color={"red"} />
+                  }
+                >
+                  <TabBar renderItem={renderTabItem} />
                 </TabHeader>
 
                 <TabPager>
-                  <TabView label={'Item5'}>
+                  <TabView label={"Item5"}>
                     <MyTabView />
                   </TabView>
-                  <TabView label={'Item6'}>
+                  <TabView label={"Item6"}>
                     <TabFlashList
-                      renderItem={_ => <Text>Item</Text>}
+                      renderItem={(_) => <Text>Item</Text>}
                       data={[1, 2]}
                     />
                   </TabView>
-                  <TabView label={'Item7'}>
+                  <TabView label={"Item7"}>
                     <TabFlashList
-                      renderItem={_ => <Text>Item</Text>}
+                      renderItem={(_) => <Text>Item</Text>}
                       data={[1, 2]}
                     />
                   </TabView>
                 </TabPager>
               </TabView>
-              <TabView label={'Item4'}>
+              <TabView label={"Item4"}>
                 <TabFlashList
-                  renderItem={_ => <Text>Item</Text>}
+                  renderItem={(_) => <Text>Item</Text>}
                   data={[1, 2]}
                 />
               </TabView>
             </TabPager>
           </TabView>
           {/*    /!*---------------------------*!/*/}
-          <TabView label={'HoHo'}>
+          <TabView label={"HoHo"}>
             <TabFlashList
               ListEmptyComponent={
                 <View
-                  style={{backgroundColor: 'red', height: 100, width: 100}}
+                  style={{ backgroundColor: "red", height: 100, width: 100 }}
                 />
               }
-              renderItem={_ => <Text>Item</Text>}
+              renderItem={(_) => <Text>Item</Text>}
               data={[]}
             />
           </TabView>
@@ -106,9 +122,9 @@ export default function App() {
 }
 
 const YourCustomView = memo(function YourCustomView({
-                                                      height,
-                                                      color,
-                                                    }: {
+  height,
+  color,
+}: {
   height?: number;
   color?: string;
 }) {
@@ -116,23 +132,29 @@ const YourCustomView = memo(function YourCustomView({
     <View
       style={{
         height: height || 200,
-        justifyContent: 'space-between',
-        backgroundColor: color || 'yellow',
-      }}>
+        justifyContent: "space-between",
+        backgroundColor: color || "yellow",
+      }}
+    >
       <Text>Your Custom Header</Text>
       <Text>Your Custom Header</Text>
     </View>
   );
 });
 
-const YourScrollView = memo(function YourScrollView({text}: {text: string}) {
+const YourScrollView = memo(function YourScrollView({
+  text,
+}: {
+  text: string;
+}) {
   return (
     <View
       style={
         {
           // top: 300,
         }
-      }>
+      }
+    >
       <View>
         <Text>{text}</Text>
       </View>
@@ -141,7 +163,7 @@ const YourScrollView = memo(function YourScrollView({text}: {text: string}) {
 });
 
 const MyTabView = memo(function MyTabView() {
-  const {mounted} = useTabView();
+  const { mounted } = useTabView();
 
   console.log(mounted);
 
@@ -149,10 +171,10 @@ const MyTabView = memo(function MyTabView() {
     <TabFlashList
       ListEmptyComponent={
         <View
-          style={{backgroundColor: 'red', height: 100, width: 100, top: 30}}
+          style={{ backgroundColor: "red", height: 100, width: 100, top: 30 }}
         />
       }
-      renderItem={_ => <Text>ItemHI</Text>}
+      renderItem={(_) => <Text>ItemHI</Text>}
       data={[]}
     />
   );
@@ -161,8 +183,8 @@ const MyTabView = memo(function MyTabView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   box: {
     width: 60,

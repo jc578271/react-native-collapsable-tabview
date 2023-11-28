@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState } from "react";
+import React, { memo, useMemo, useState } from "react";
 import Animated, {
   interpolate,
   runOnJS,
@@ -10,19 +10,19 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import type { ViewStyle } from "react-native";
-import { BarItem } from "./components/BarItem";
+import { BarItem, type IRenderTabBarItem } from "./components/BarItem";
 import type { IItemLayout } from "./types";
 import { styles } from "./styles";
 import { useWindow } from "./hooks/useWindow";
 import { useTabView } from "./TabView";
-import { ROOT_ID } from "./constant";
 
-interface TabBarProps {
+export interface TabBarProps {
   display?: "sameTabsWidth" | "minWindowWidth" | "default";
   horizontalGap?: number;
   verticalGap?: number;
   underlineStyle?: ViewStyle;
   tabBarStyle?: ViewStyle;
+  renderItem: (params: IRenderTabBarItem) => React.ReactElement | null;
 }
 
 export const TabBar = memo(function TabBar({
@@ -31,8 +31,9 @@ export const TabBar = memo(function TabBar({
   verticalGap,
   underlineStyle,
   tabBarStyle,
+  renderItem,
 }: TabBarProps) {
-  const { tabs: aTabs, animatedIndex, pagerViewRef, tabViewId } = useTabView();
+  const { tabs: aTabs, animatedIndex } = useTabView();
 
   /* set tabs from pager */
   const [tabs, setTabs] = useState(aTabs.value);
@@ -112,21 +113,6 @@ export const TabBar = memo(function TabBar({
     };
   }, [horizontalGap]);
 
-  /* onPress item */
-  const onTabPress = useCallback(
-    (index: number) => () => {
-      if (tabViewId === ROOT_ID) {
-        pagerViewRef.current?.setPage(index);
-      } else {
-        pagerViewRef.current?.scrollTo({
-          x: index * windowWidth.value,
-          animated: false,
-        });
-      }
-    },
-    [pagerViewRef.current]
-  );
-
   const animatedContainerStyle = useAnimatedStyle(
     () =>
       display === "minWindowWidth"
@@ -156,8 +142,8 @@ export const TabBar = memo(function TabBar({
           <BarItem
             index={index}
             title={item}
+            renderItem={renderItem}
             itemLayout={itemLayout}
-            onPress={onTabPress(index)}
           />
         ))}
       </Animated.View>

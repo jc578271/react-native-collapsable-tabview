@@ -11,7 +11,7 @@ import { useTabRoot } from "./TabRoot";
 import { TabBarContainer } from "./components/TabBarContainer";
 import type { ViewProps } from "react-native";
 
-interface TabHeaderProps extends ViewProps {
+export interface TabHeaderProps extends ViewProps {
   HeaderComponent?: ReactNode | undefined;
 }
 
