@@ -19,7 +19,8 @@ import {
   TabView,
   TabFlashList,
   TabScrollView,
-  useTabView
+  useTabView,
+  IRenderTabBarItem,
 } from 'react-native-collapsable-tabview';
 
 const TabItem = memo(function TabItem({ item, ...props }: IRenderTabBarItem) {
