@@ -8,15 +8,64 @@ This is collapsable tabview package
 npm install react-native-collapsable-tabview
 ```
 
-## Usage
+## Basic Usage
 
 ```js
-import { multiply } from 'react-native-collapsable-tabview';
+import {
+  TabRoot,
+  TabHeader,
+  TabBar,
+  TabPager,
+  TabView,
+  TabFlashList,
+  TabScrollView,
+  useTabView
+} from 'react-native-collapsable-tabview';
 
-// ...
-
-const result = await multiply(3, 7);
+export default function App() {
+  return (
+    <TabRoot>
+      <TabHeader>
+        <TabBar display={'sameTabsWidth'}/>
+      </TabHeader>
+      <TabPager>
+        <TabView label={'Hello'}>
+          <TabScrollView>
+            <YourScrollView/>
+          </TabScrollView>
+        </TabView>
+        <TabView label={'Hi'}>
+          <TabFlashList
+            renderItem={_ => <Text>Item</Text>}
+            data={[1, 2]}
+          />
+        </TabView>
+      </TabPager>
+    </TabRoot>
+  )
+}
 ```
+## API
+
+### TabRoot
+#### Methods
+
+### TabHeader
+#### Props
+Name            | Type     | Required | Description           |
+--------------- |----------|----------|-----------------------|
+HeaderComponent | Element  | No       | render Header Element |
+...ViewProps    |          | No       | extends view props    |
+
+### TabBar
+#### Props
+Name            | Type                                          | Required | Description            |
+--------------- |-----------------------------------------------|----------|------------------------|
+display         | 'sameTabsWidth', 'minWindowWidth' , 'default' | No       | display Tab Bar        |
+horizontalGap   | number                                        | No       | horizontal gap of tabs |
+verticalGap     | number                                        | No       | vertical gap of tabs   |
+underlineStyle  | ViewStyle                                     | No       | style of underline     |
+tabBarStyle     | ViewStyle                                     | No       | style of tab bar       |
 
 ## Contributing
 

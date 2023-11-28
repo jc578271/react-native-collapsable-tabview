@@ -2,7 +2,6 @@ import React, {memo, useCallback} from 'react';
 import Animated, {
   runOnUI,
   type SharedValue,
-  useAnimatedStyle,
 } from 'react-native-reanimated';
 import {
   type LayoutChangeEvent,
@@ -19,22 +18,12 @@ export const BarItem = memo(function BarItem({
   title,
   index,
   itemLayout,
-  tabWidth,
   ...rest
 }: {
   title: string;
   index: number;
   itemLayout: SharedValue<{[id: string]: IItemLayout}>;
-  tabWidth?: SharedValue<number>;
 } & TouchableOpacityProps) {
-  const tabStyle = tabWidth
-    ? useAnimatedStyle(
-        () => ({
-          width: tabWidth.value,
-        }),
-        [],
-      )
-    : undefined;
 
   const onLayout = useCallback(
     (e: LayoutChangeEvent) => {
@@ -56,7 +45,7 @@ export const BarItem = memo(function BarItem({
   return (
     <ATouchableOpacity
       {...rest}
-      style={[rest.style, styles.barItem, tabStyle]}
+      style={[rest.style, styles.barItem]}
       onLayout={onLayout}>
       <Text>{title}</Text>
     </ATouchableOpacity>
