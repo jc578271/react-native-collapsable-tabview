@@ -2,6 +2,7 @@ import type {AnimatedRef, SharedValue} from 'react-native-reanimated';
 import type PagerView from 'react-native-pager-view';
 import type {NativeScrollEvent} from 'react-native';
 import {type ReactNode} from 'react';
+import Animated from "react-native-reanimated";
 
 export interface TabViewProps {
   label: string;
@@ -31,7 +32,7 @@ export interface ITabView extends TabViewProps {
   minBarTop: SharedValue<number>;
   rootIndex: SharedValue<string>;
   rootAnimatedIndex: SharedValue<string>;
-  pagerViewRef: AnimatedRef<PagerView>;
+  pagerViewRef: AnimatedRef<PagerView & Animated.ScrollView>;
   tabViewId: string;
 }
 

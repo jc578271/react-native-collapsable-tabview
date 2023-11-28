@@ -1,4 +1,7 @@
-import {useAnimatedRef, useSharedValue} from 'react-native-reanimated';
+import Animated, {
+  useAnimatedRef,
+  useSharedValue,
+} from 'react-native-reanimated';
 import {useMemo} from 'react';
 import {makeid} from '../utils/makeid';
 import PagerView from 'react-native-pager-view';
@@ -12,7 +15,7 @@ export const _useTabView = (isRoot?: boolean) => {
   const headerHeight = useSharedValue(0);
   const barHeight = useSharedValue(0);
   const tabs = useSharedValue<string[]>([]);
-  const pagerViewRef = useAnimatedRef<PagerView>();
+  const pagerViewRef = useAnimatedRef<PagerView & Animated.ScrollView>();
 
   return useMemo(
     () => ({

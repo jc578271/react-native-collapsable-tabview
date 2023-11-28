@@ -5,13 +5,13 @@ import Animated, {
   useAnimatedScrollHandler,
   useDerivedValue,
   useSharedValue,
-} from "react-native-reanimated";
-import { useTabRoot } from "../TabRoot";
-import { useTabView } from "../TabView";
-import { type RefObject, useCallback, useRef } from "react";
-import { FlashList } from "@shopify/flash-list";
-import { interactManager } from "../utils/interactManager";
-import type { LayoutChangeEvent } from "react-native";
+} from 'react-native-reanimated';
+import {useTabRoot} from '../TabRoot';
+import {useTabView} from '../TabView';
+import {type RefObject, useCallback, useRef} from 'react';
+import {FlashList} from '@shopify/flash-list';
+import {interactManager} from '../utils/interactManager';
+import type {LayoutChangeEvent} from 'react-native';
 
 interface IUseAutoScroll {
   onScroll: (e: any) => void;
@@ -21,10 +21,10 @@ interface IUseAutoScroll {
 }
 
 export function useAutoScroll(
-  ref: RefObject<Animated.ScrollView & FlashList<any>>
+  ref: RefObject<Animated.ScrollView & FlashList<any>>,
 ): IUseAutoScroll {
-  const { animatedScrollValue } = useTabRoot();
-  const { minBarTop, rootIndex, rootAnimatedIndex, label } = useTabView();
+  const {animatedScrollValue} = useTabRoot();
+  const {minBarTop, rootIndex, rootAnimatedIndex, label} = useTabView();
   const scrollViewRef =
     ref || useRef<Animated.ScrollView & FlashList<any>>(null);
 
@@ -34,7 +34,7 @@ export function useAutoScroll(
   /* scroll handler */
   const onScroll = useAnimatedScrollHandler(
     {
-      onScroll: (e) => {
+      onScroll: e => {
         currentScrollValue.value = e.contentOffset.y;
 
         /* only set animatedScrollValue when current index */
@@ -43,7 +43,7 @@ export function useAutoScroll(
         }
       },
     },
-    [label]
+    [label],
   );
 
   /* auto scroll for other items */
@@ -55,13 +55,13 @@ export function useAutoScroll(
             offset: value,
             animated: false,
           });
-          scrollViewRef.current?.scrollTo?.({ y: value, animated: false });
+          scrollViewRef.current?.scrollTo?.({y: value, animated: false});
         },
         100,
-        timeout
+        timeout,
       );
     },
-    [scrollViewRef, label]
+    [scrollViewRef, label],
   );
 
   /* get animated height from top of scroll view to top of tab view */
@@ -72,7 +72,7 @@ export function useAutoScroll(
   /* handle auto scroll */
   useAnimatedReaction(
     () => animatedScrollValue.value,
-    (animatedScrollValue) => {
+    animatedScrollValue => {
       /* scroll other scrollView when value is changed */
       if (rootIndex.value !== rootAnimatedIndex.value) {
         if (
@@ -83,12 +83,12 @@ export function useAutoScroll(
           runOnJS(autoScroll)(Math.min(animatedScrollValue, minBarTop.value));
         } else {
           runOnJS(autoScroll)(
-            currentScrollValue.value + animatedHeight.value - minBarTop.value
+            currentScrollValue.value + animatedHeight.value - minBarTop.value,
           );
         }
       }
     },
-    []
+    [],
   );
 
   /* onListLayout */

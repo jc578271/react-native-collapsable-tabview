@@ -1,6 +1,9 @@
 import React, {forwardRef, memo} from 'react';
 import RNFlashList, {type FlashListProps} from './components/RNFlashList';
-import Animated, { type SharedValue, useAnimatedStyle} from 'react-native-reanimated';
+import Animated, {
+  type SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import {useTabView} from './TabView';
 import {useAutoScroll} from './hooks/useAutoScroll';
 import {View} from 'react-native';
@@ -26,7 +29,7 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
       return {
         minHeight: listHeight.value + minBarTop.value,
       };
-    }, []);
+    });
 
     return (
       <View style={{flex: 1}} onLayout={onListLayout}>
@@ -57,7 +60,10 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
 const EmptyView = memo(function EmptyView({
   children,
   listHeight,
-}: {listHeight: SharedValue<number>, children: any}) {
+}: {
+  listHeight: SharedValue<number>;
+  children: any;
+}) {
   const {minBarTop, emptyBarHeight} = useTabView();
 
   const animatedStyle = useAnimatedStyle(() => {

@@ -26,7 +26,7 @@ export default function App() {
   return (
     <TabRoot>
       <TabHeader>
-        <TabBar display={'sameTabsWidth'}/>
+        <TabBar />
       </TabHeader>
       <TabPager>
         <TabView label={'Hello'}>
@@ -45,10 +45,42 @@ export default function App() {
   )
 }
 ```
-## API
+## Multiple Tab Bar Usage
+```js
+<TabRoot>
+  <TabHeader>
+    <TabBar />
+  </TabHeader>
+  <TabPager>
+    <TabView label={'Hello'}>
+      <TabHeader>
+        <TabBar />
+      </TabHeader>
+      <TabPager>
+        <TabView label={'Item 1'}>
+          <TabScrollView>
+            <YourScrollView/>
+          </TabScrollView>
+        </TabView>
+        <TabView label={'Item 2'}>
+          <TabScrollView>
+            <YourScrollView/>
+          </TabScrollView>
+        </TabView>
+      </TabPager>
+    </TabView>
+    <TabView label={'Hi'}>
+      <TabFlashList
+        renderItem={_ => <Text>Item</Text>}
+        data={[1, 2]}
+      />
+    </TabView>
+  </TabPager>
+</TabRoot>
+```
 
-### TabRoot
-#### Methods
+
+## API
 
 ### TabHeader
 #### Props
@@ -66,6 +98,37 @@ horizontalGap   | number                                        | No       | hor
 verticalGap     | number                                        | No       | vertical gap of tabs   |
 underlineStyle  | ViewStyle                                     | No       | style of underline     |
 tabBarStyle     | ViewStyle                                     | No       | style of tab bar       |
+
+### TabPager
+#### Methods
+Name            | Type                      | Description |
+--------------- |---------------------------|-------------|
+goToPage         | (index: number) => void  | go to page  |
+
+#### Props
+Name            | Type                     | Required | Description        |
+--------------- |--------------------------|----------|--------------------|
+onPageChanged   |  (index: number) => void | No       | listen tab changed |
+
+### TabView
+#### Props
+Name            | Type   | Required | Description       |
+--------------- |--------|----------|-------------------|
+label   | string | Yes      | label of tab item |
+
+
+### TabScrollView
+#### Props
+Name            | Type   | Required | Description         |
+--------------- |--------|----------|---------------------|
+...ScrollViewProps   |  | no        | props of ScrollView |
+
+### TabFlashList
+#### Props
+Name            | Type   | Required | Description         |
+--------------- |--------|----------|---------------------|
+...FlashListProps   |  | no        | props of FlashList |
+
 
 ## Contributing
 
