@@ -7,7 +7,7 @@ import {
   StyleSheet,
   type NativeScrollEvent,
   type ViewStyle,
-} from 'react-native';
+} from "react-native";
 import {
   BaseItemAnimator,
   DataProvider,
@@ -16,7 +16,9 @@ import {
   type RecyclerListViewProps,
   type WindowCorrectionConfig,
 } from "recyclerlistview";
-import StickyContainer, { type StickyContainerProps } from "recyclerlistview/sticky";
+import StickyContainer, {
+  type StickyContainerProps,
+} from "recyclerlistview/sticky";
 
 import AutoLayoutView from "@shopify/flash-list/dist/native/auto-layout/AutoLayoutView";
 import CellContainer from "@shopify/flash-list/dist//native/cell-container/CellContainer";
@@ -470,26 +472,28 @@ class FlashList<T> extends React.PureComponent<
     this.clearPostLoadTimeout();
     return (
       <>
-      <Animated.View style={this.props.animatedContentContainerStyle}>
-        <PureComponentWrapper
-          enabled={this.isListLoaded || children.length > 0 || this.isEmptyList}
-          contentStyle={this.props.contentContainerStyle}
-          horizontal={this.props.horizontal}
-          header={this.props.ListHeaderComponent}
-          extraData={this.state.extraData}
-          headerStyle={this.props.ListHeaderComponentStyle}
-          inverted={this.props.inverted}
-          renderer={this.header}
-        />
-        <AutoLayoutView
-          {...props}
-          onBlankAreaEvent={this.props.onBlankArea}
-          onLayout={this.updateDistanceFromWindow}
-          disableAutoLayout={this.props.disableAutoLayout}
-        >
-          {children}
-        </AutoLayoutView>
-      </Animated.View>
+        <Animated.View style={this.props.animatedContentContainerStyle}>
+          <PureComponentWrapper
+            enabled={
+              this.isListLoaded || children.length > 0 || this.isEmptyList
+            }
+            contentStyle={this.props.contentContainerStyle}
+            horizontal={this.props.horizontal}
+            header={this.props.ListHeaderComponent}
+            extraData={this.state.extraData}
+            headerStyle={this.props.ListHeaderComponentStyle}
+            inverted={this.props.inverted}
+            renderer={this.header}
+          />
+          <AutoLayoutView
+            {...props}
+            onBlankAreaEvent={this.props.onBlankArea}
+            onLayout={this.updateDistanceFromWindow}
+            disableAutoLayout={this.props.disableAutoLayout}
+          >
+            {children}
+          </AutoLayoutView>
+        </Animated.View>
         {this.isEmptyList
           ? this.getValidComponent(this.props.ListEmptyComponent)
           : null}
@@ -691,8 +695,10 @@ class FlashList<T> extends React.PureComponent<
                 : "row",
           }}
         >
-          {// @ts-ignore
-            this.rowRendererWithIndex(index, RenderTargetOptions.Cell)}
+          {
+            // @ts-ignore
+            this.rowRendererWithIndex(index, RenderTargetOptions.Cell)
+          }
         </View>
         {this.separator(index)}
       </>

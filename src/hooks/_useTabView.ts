@@ -1,11 +1,11 @@
 import Animated, {
   useAnimatedRef,
   useSharedValue,
-} from 'react-native-reanimated';
-import {useMemo} from 'react';
-import {makeid} from '../utils/makeid';
-import PagerView from 'react-native-pager-view';
-import {ROOT_ID} from '../constant';
+} from "react-native-reanimated";
+import { useMemo } from "react";
+import { makeid } from "../utils/makeid";
+import PagerView from "react-native-pager-view";
+import { ROOT_ID } from "../constant";
 
 export const _useTabView = (isRoot?: boolean) => {
   const tabViewId = useMemo(() => (isRoot ? ROOT_ID : makeid(6)), [isRoot]);
@@ -28,6 +28,6 @@ export const _useTabView = (isRoot?: boolean) => {
       headerHeight,
       barHeight,
     }),
-    [pagerViewRef, tabViewId],
+    [pagerViewRef, tabViewId]
   );
 };

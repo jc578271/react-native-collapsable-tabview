@@ -1,14 +1,14 @@
-import { useEvent, useHandler } from 'react-native-reanimated';
+import { useEvent, useHandler } from "react-native-reanimated";
 
 export function usePageScrollHandler(handlers: any, dependencies: any[]) {
   const { context, doDependenciesDiffer } = useHandler(handlers, dependencies);
-  const subscribeForEvents = ['onPageScroll'];
+  const subscribeForEvents = ["onPageScroll"];
 
   return useEvent(
     (event: any) => {
-      'worklet';
+      "worklet";
       const { onPageScroll } = handlers;
-      if (onPageScroll && event.eventName.endsWith('onPageScroll')) {
+      if (onPageScroll && event.eventName.endsWith("onPageScroll")) {
         onPageScroll(event, context);
       }
     },

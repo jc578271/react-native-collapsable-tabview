@@ -1,15 +1,15 @@
-import React, {forwardRef, memo} from 'react';
+import React, { forwardRef, memo } from "react";
 import Animated, {
   type AnimatedScrollViewProps,
   useAnimatedStyle,
-} from 'react-native-reanimated';
-import {useTabView} from './TabView';
-import {useAutoScroll} from './hooks/useAutoScroll';
-import {View} from 'react-native';
+} from "react-native-reanimated";
+import { useTabView } from "./TabView";
+import { useAutoScroll } from "./hooks/useAutoScroll";
+import { View } from "react-native";
 
 const _TabScrollView = forwardRef<Animated.ScrollView, AnimatedScrollViewProps>(
-  function TabScrollView({children, ...props}, ref) {
-    const {emptyBarHeight, minBarTop} = useTabView();
+  function TabScrollView({ children, ...props }, ref) {
+    const { emptyBarHeight, minBarTop } = useTabView();
 
     const animatedStyle = useAnimatedStyle(() => {
       return {
@@ -17,8 +17,8 @@ const _TabScrollView = forwardRef<Animated.ScrollView, AnimatedScrollViewProps>(
       };
     }, []);
 
-    const {onScroll, scrollViewRef, listHeight, onListLayout} = useAutoScroll(
-      ref as any,
+    const { onScroll, scrollViewRef, listHeight, onListLayout } = useAutoScroll(
+      ref as any
     );
 
     const containerStyle = useAnimatedStyle(() => {
@@ -28,7 +28,7 @@ const _TabScrollView = forwardRef<Animated.ScrollView, AnimatedScrollViewProps>(
     }, []);
 
     return (
-      <View style={{flex: 1}} onLayout={onListLayout}>
+      <View style={{ flex: 1, overflow: "scroll" }} onLayout={onListLayout}>
         <Animated.ScrollView ref={scrollViewRef} {...props} onScroll={onScroll}>
           <Animated.View style={containerStyle}>
             <Animated.View style={animatedStyle} />
@@ -37,7 +37,7 @@ const _TabScrollView = forwardRef<Animated.ScrollView, AnimatedScrollViewProps>(
         </Animated.ScrollView>
       </View>
     );
-  },
+  }
 );
 
 export const TabScrollView = memo(_TabScrollView);

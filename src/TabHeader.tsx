@@ -3,13 +3,13 @@ import React, {
   type PropsWithChildren,
   type ReactNode,
   useCallback,
-} from 'react';
-import {styles} from './styles';
-import Animated, {useAnimatedStyle} from 'react-native-reanimated';
-import {useTabView} from './TabView';
-import {useTabRoot} from './TabRoot';
-import {TabBarContainer} from './components/TabBarContainer';
-import type { ViewProps } from 'react-native';
+} from "react";
+import { styles } from "./styles";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { useTabView } from "./TabView";
+import { useTabRoot } from "./TabRoot";
+import { TabBarContainer } from "./components/TabBarContainer";
+import type { ViewProps } from "react-native";
 
 interface TabHeaderProps extends ViewProps {
   HeaderComponent?: ReactNode | undefined;
@@ -30,9 +30,9 @@ export const TabHeader = memo(function TabHeader({
 const AnimatedTabHeader = memo(function AnimatedTabHeader({
   children,
 }: PropsWithChildren<{}>) {
-  const {animatedHeight} = useTabRoot();
+  const { animatedHeight } = useTabRoot();
 
-  const {headerHeight, emptyHeaderHeight} = useTabView();
+  const { headerHeight, emptyHeaderHeight } = useTabView();
 
   const emptyHeaderStyle = useAnimatedStyle(() => {
     return {
@@ -52,13 +52,15 @@ const AnimatedTabHeader = memo(function AnimatedTabHeader({
 
   return (
     <Animated.View
-      pointerEvents={'box-none'}
-      style={[styles.header, tabHeaderStyle]}>
-      <Animated.View pointerEvents={'box-none'} style={emptyHeaderStyle} />
+      pointerEvents={"box-none"}
+      style={[styles.header, tabHeaderStyle]}
+    >
+      <Animated.View pointerEvents={"box-none"} style={emptyHeaderStyle} />
       <Animated.View
-        pointerEvents={'box-none'}
-        style={{overflow: 'scroll'}}
-        onLayout={onHeaderLayout}>
+        pointerEvents={"box-none"}
+        style={{ overflow: "scroll" }}
+        onLayout={onHeaderLayout}
+      >
         {children}
       </Animated.View>
     </Animated.View>

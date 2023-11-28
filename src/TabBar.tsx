@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo, useState} from 'react';
+import React, { memo, useCallback, useMemo, useState } from "react";
 import Animated, {
   interpolate,
   runOnJS,
@@ -8,17 +8,17 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-} from 'react-native-reanimated';
-import type {ViewStyle} from 'react-native';
-import {BarItem} from './components/BarItem';
-import type {IItemLayout} from './types';
-import {styles} from './styles';
-import {useWindow} from './hooks/useWindow';
-import {useTabView} from './TabView';
-import {ROOT_ID} from './constant';
+} from "react-native-reanimated";
+import type { ViewStyle } from "react-native";
+import { BarItem } from "./components/BarItem";
+import type { IItemLayout } from "./types";
+import { styles } from "./styles";
+import { useWindow } from "./hooks/useWindow";
+import { useTabView } from "./TabView";
+import { ROOT_ID } from "./constant";
 
 interface TabBarProps {
-  display?: 'sameTabsWidth' | 'minWindowWidth' | 'default';
+  display?: "sameTabsWidth" | "minWindowWidth" | "default";
   horizontalGap?: number;
   verticalGap?: number;
   underlineStyle?: ViewStyle;
@@ -32,41 +32,41 @@ export const TabBar = memo(function TabBar({
   underlineStyle,
   tabBarStyle,
 }: TabBarProps) {
-  const {tabs: aTabs, animatedIndex, pagerViewRef, tabViewId} = useTabView();
+  const { tabs: aTabs, animatedIndex, pagerViewRef, tabViewId } = useTabView();
 
   /* set tabs from pager */
   const [tabs, setTabs] = useState(aTabs.value);
   useAnimatedReaction(
     () => aTabs.value,
-    aTabs => {
+    (aTabs) => {
       runOnJS(setTabs)(aTabs);
     },
-    [],
+    []
   );
 
   const barRef = useAnimatedRef<Animated.ScrollView>();
-  const itemLayout = useSharedValue<{[id: string]: IItemLayout}>({});
-  const {width: windowWidth} = useWindow();
+  const itemLayout = useSharedValue<{ [id: string]: IItemLayout }>({});
+  const { width: windowWidth } = useWindow();
   const _gap = useMemo(() => horizontalGap || 0, [horizontalGap]);
 
   /* handle tab width */
   const inputRange = useDerivedValue(
-    () => Object.keys(itemLayout.value).map(i => parseInt(i)),
-    [itemLayout],
+    () => Object.keys(itemLayout.value).map((i) => parseInt(i)),
+    [itemLayout]
   );
 
   const outputLeftRange = useDerivedValue(
-    () => Object.values(itemLayout.value).map(i => i.left + _gap),
-    [itemLayout, _gap],
+    () => Object.values(itemLayout.value).map((i) => i.left + _gap),
+    [itemLayout, _gap]
   );
 
   const outputWidthRange = useDerivedValue(
-    () => Object.values(itemLayout.value).map(i => i.width - 2 * _gap),
-    [itemLayout, _gap],
+    () => Object.values(itemLayout.value).map((i) => i.width - 2 * _gap),
+    [itemLayout, _gap]
   );
 
   const outputScrollRange = useDerivedValue(() => {
-    return Object.values(itemLayout.value).map(item => {
+    return Object.values(itemLayout.value).map((item) => {
       return Math.max(item.left - (windowWidth.value - item.width) / 2, 0);
     });
   }, [itemLayout]);
@@ -77,18 +77,18 @@ export const TabBar = memo(function TabBar({
       aIndex: animatedIndex.value,
       outputScrollRange: outputScrollRange.value,
     }),
-    cur => {
-      const {aIndex, outputScrollRange} = cur;
+    (cur) => {
+      const { aIndex, outputScrollRange } = cur;
       if (inputRange.value.length > 1 && outputScrollRange.length > 1) {
         scrollTo(
           barRef,
           interpolate(aIndex, inputRange.value, outputScrollRange),
           0,
-          false,
+          false
         );
       }
     },
-    [],
+    []
   );
 
   const underlineStyles = useAnimatedStyle(() => {
@@ -98,7 +98,7 @@ export const TabBar = memo(function TabBar({
           ? interpolate(
               animatedIndex.value,
               inputRange.value,
-              outputLeftRange.value,
+              outputLeftRange.value
             )
           : 0,
       width:
@@ -106,7 +106,7 @@ export const TabBar = memo(function TabBar({
           ? interpolate(
               animatedIndex.value,
               inputRange.value,
-              outputWidthRange.value,
+              outputWidthRange.value
             )
           : 0,
     };
@@ -124,22 +124,22 @@ export const TabBar = memo(function TabBar({
         });
       }
     },
-    [pagerViewRef.current],
+    [pagerViewRef.current]
   );
 
   const animatedContainerStyle = useAnimatedStyle(
     () =>
-      display === 'minWindowWidth'
+      display === "minWindowWidth"
         ? {
             minWidth: windowWidth.value,
           }
-        : {minWidth: 0},
-    [display],
+        : { minWidth: 0 },
+    [display]
   );
 
   const contentContainerStyle = useMemo(
-    () => (display === 'sameTabsWidth' ? {flex: 1} : {}),
-    [display],
+    () => (display === "sameTabsWidth" ? { flex: 1 } : {}),
+    [display]
   );
 
   return (
@@ -147,9 +147,11 @@ export const TabBar = memo(function TabBar({
       showsHorizontalScrollIndicator={false}
       horizontal={true}
       contentContainerStyle={contentContainerStyle}
-      ref={barRef as any}>
+      ref={barRef as any}
+    >
       <Animated.View
-        style={[tabBarStyle, styles.contentStyle, animatedContainerStyle]}>
+        style={[tabBarStyle, styles.contentStyle, animatedContainerStyle]}
+      >
         {tabs.map((item, index) => (
           <BarItem
             index={index}
@@ -168,9 +170,14 @@ export const TabBar = memo(function TabBar({
               paddingVertical: verticalGap,
             },
             underlineStyles,
-          ]}>
+          ]}
+        >
           <Animated.View
-            style={[styles.defaultUnderlineWithGap, underlineStyle, {flex: 1}]}
+            style={[
+              styles.defaultUnderlineWithGap,
+              underlineStyle,
+              { flex: 1 },
+            ]}
           />
         </Animated.View>
       ) : (

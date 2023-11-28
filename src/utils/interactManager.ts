@@ -1,9 +1,9 @@
-import {InteractionManager} from 'react-native';
+import { InteractionManager } from "react-native";
 
 export const interactManager = (
   fn: () => void,
   wait: number = 0,
-  timeout?: {current: any},
+  timeout?: { current: any }
 ) => {
   return InteractionManager.runAfterInteractions(() => {
     if (timeout) {

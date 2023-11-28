@@ -1,6 +1,10 @@
-import { runOnUI, useDerivedValue, useSharedValue } from 'react-native-reanimated';
-import { Dimensions, type ScaledSize } from 'react-native';
-import { useCallback, useEffect, useMemo } from 'react';
+import {
+  runOnUI,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
+import { Dimensions, type ScaledSize } from "react-native";
+import { useCallback, useEffect, useMemo } from "react";
 
 export const useWindow = () => {
   const window = useSharedValue(Dimensions.get("window"));

@@ -5,18 +5,18 @@ import React, {
   useContext,
   useMemo,
   useState,
-} from 'react';
-import type {IExternalTabView, ITabView, TabViewProps} from './types';
-import {useTabRoot} from './TabRoot';
-import {_useTabView} from './hooks/_useTabView';
-import {useWindow} from './hooks/useWindow';
+} from "react";
+import type { IExternalTabView, ITabView, TabViewProps } from "./types";
+import { useTabRoot } from "./TabRoot";
+import { _useTabView } from "./hooks/_useTabView";
+import { useWindow } from "./hooks/useWindow";
 import Animated, {
   runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
-} from 'react-native-reanimated';
-import {ROOT_ID} from './constant';
+} from "react-native-reanimated";
+import { ROOT_ID } from "./constant";
 
 const Context = createContext<ITabView | null>(null);
 const ExternalContext = createContext<IExternalTabView | null>(null);
@@ -38,12 +38,12 @@ export const TabView = memo(function TabItem({
     staticIndex: parentStaticIndex,
   } = useTabView();
 
-  const {label} = props;
+  const { label } = props;
 
   const value = _useTabView();
 
   /* style Item View */
-  const {width} = useWindow();
+  const { width } = useWindow();
   const animatedStyle = useAnimatedStyle(() => {
     return {
       width: width.value,
@@ -66,16 +66,16 @@ export const TabView = memo(function TabItem({
 
   const minBarTop = useDerivedValue(
     () => parentMinBarTop.value + value.headerHeight.value,
-    [],
+    []
   );
 
   const rootIndex = useDerivedValue(() => {
-    return parentRootIndex.value + '' + tabs.value.indexOf(label);
+    return parentRootIndex.value + "" + tabs.value.indexOf(label);
   }, [label]);
   const rootAnimatedIndex = useDerivedValue(
     () =>
-      parentRootAnimatedIndex.value + '' + Math.round(parentStaticIndex.value),
-    [],
+      parentRootAnimatedIndex.value + "" + Math.round(parentStaticIndex.value),
+    []
   );
 
   const returnValue = useMemo(
@@ -92,24 +92,24 @@ export const TabView = memo(function TabItem({
       ...value,
       ...props,
     }),
-    [value, props],
+    [value, props]
   );
 
   /* external values */
   const visible = useDerivedValue(
     () => rootIndex.value === rootAnimatedIndex.value,
-    [],
+    []
   );
   const [mounted, setMounted] = useState(false);
 
   useAnimatedReaction(
     () => visible.value,
-    visible => {
+    (visible) => {
       if (!mounted && visible) {
         runOnJS(setMounted)(true);
       }
     },
-    [],
+    []
   );
 
   const externalValue = useMemo(
@@ -117,7 +117,7 @@ export const TabView = memo(function TabItem({
       visible,
       mounted,
     }),
-    [mounted],
+    [mounted]
   );
 
   if (tabViewId === ROOT_ID) {
@@ -144,12 +144,12 @@ export const TabView = memo(function TabItem({
 export const useTabView = () => {
   let value = useContext<ITabView | null>(Context);
   if (value === null) value = useTabRoot();
-  if (value === null) throw new Error('wrap TabView before using');
+  if (value === null) throw new Error("wrap TabView before using");
   return value;
 };
 
 export const useExternalTabView = () => {
   let value = useContext<IExternalTabView | null>(ExternalContext);
-  if (value === null) throw new Error('wrap TabView before using');
+  if (value === null) throw new Error("wrap TabView before using");
   return value;
 };

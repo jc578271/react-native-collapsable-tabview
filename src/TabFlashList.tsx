@@ -1,19 +1,19 @@
-import React, {forwardRef, memo} from 'react';
-import RNFlashList, {type FlashListProps} from './components/RNFlashList';
+import React, { forwardRef, memo } from "react";
+import RNFlashList, { type FlashListProps } from "./components/RNFlashList";
 import Animated, {
   type SharedValue,
   useAnimatedStyle,
-} from 'react-native-reanimated';
-import {useTabView} from './TabView';
-import {useAutoScroll} from './hooks/useAutoScroll';
-import {View} from 'react-native';
+} from "react-native-reanimated";
+import { useTabView } from "./TabView";
+import { useAutoScroll } from "./hooks/useAutoScroll";
+import { View } from "react-native";
 
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<any>>(RNFlashList);
 
 const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
   function TabViewFlashList(props, ref) {
-    const {emptyBarHeight, minBarTop} = useTabView();
+    const { emptyBarHeight, minBarTop } = useTabView();
 
     const animatedStyle = useAnimatedStyle(() => {
       return {
@@ -21,8 +21,8 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
       };
     }, []);
 
-    const {onScroll, scrollViewRef, listHeight, onListLayout} = useAutoScroll(
-      ref as any,
+    const { onScroll, scrollViewRef, listHeight, onListLayout } = useAutoScroll(
+      ref as any
     );
 
     const containerStyle = useAnimatedStyle(() => {
@@ -32,7 +32,7 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
     });
 
     return (
-      <View style={{flex: 1}} onLayout={onListLayout}>
+      <View style={{ flex: 1, overflow: "scroll" }} onLayout={onListLayout}>
         <AnimatedFlashList
           ref={scrollViewRef}
           {...props}
@@ -54,7 +54,7 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
         />
       </View>
     );
-  },
+  }
 );
 
 const EmptyView = memo(function EmptyView({
@@ -64,7 +64,7 @@ const EmptyView = memo(function EmptyView({
   listHeight: SharedValue<number>;
   children: any;
 }) {
-  const {minBarTop, emptyBarHeight} = useTabView();
+  const { minBarTop, emptyBarHeight } = useTabView();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -78,10 +78,11 @@ const EmptyView = memo(function EmptyView({
         animatedStyle,
         {
           height: 0,
-          overflow: 'visible',
+          overflow: "visible",
         },
-      ]}>
-      <View style={{height: 1000, alignItems: 'center'}}>{children}</View>
+      ]}
+    >
+      <View style={{ height: 1000, alignItems: "center" }}>{children}</View>
     </Animated.View>
   );
 });

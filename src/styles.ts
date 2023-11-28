@@ -1,8 +1,8 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   contentStyle: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
   },
   barItem: {
@@ -11,35 +11,35 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   bar: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    overflow: 'scroll',
+    overflow: "scroll",
     zIndex: 2,
   },
   header: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
-    overflow: 'scroll',
+    overflow: "scroll",
     zIndex: 1,
   },
   underline: {
-    position: 'absolute',
+    position: "absolute",
     height: 2,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     bottom: 0,
   },
 
   underlineWithGap: {
-    position: 'absolute',
-    height: '100%',
+    position: "absolute",
+    height: "100%",
     zIndex: -1,
   },
   defaultUnderlineWithGap: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     opacity: 0.4,
     borderRadius: 50,
   },
