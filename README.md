@@ -10,7 +10,7 @@ yarn add react-native-reanimated react-native-pager-view @shopify/flash-list
 ```
 
 ```sh
-yarn add react-native-collapsible-tabview
+yarn add react-native-collapsable-tabview
 ```
 
 ## Basic Usage
@@ -26,7 +26,7 @@ import {
   TabScrollView,
   useTabView,
   IRenderTabBarItem,
-} from 'react-native-collapsible-tabview';
+} from 'react-native-collapsable-tabview';
 
 const TabItem = memo(function TabItem({ item, ...props }: IRenderTabBarItem) {
   return (

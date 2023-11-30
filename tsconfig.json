@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-collapsible-tabview": ["./src/index"]
+      "react-native-collapsable-tabview": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
