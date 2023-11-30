@@ -1,11 +1,11 @@
-# react-native-collapsable-tabview
+# react-native-collapsible-tabview
 
 This is collapsable tabview package
 
 ## Installation
 
 ```sh
-npm install react-native-collapsable-tabview
+npm install react-native-collapsible-tabview
 ```
 
 ## Basic Usage
@@ -21,7 +21,7 @@ import {
   TabScrollView,
   useTabView,
   IRenderTabBarItem,
-} from 'react-native-collapsable-tabview';
+} from 'react-native-collapsible-tabview';
 
 const TabItem = memo(function TabItem({ item, ...props }: IRenderTabBarItem) {
   return (

@@ -11,7 +11,7 @@ import {
   TabScrollView,
   useTabView,
   type IRenderTabBarItem,
-} from "react-native-collapsable-tabview";
+} from "react-native-collapsible-tabview";
 import { memo } from "react";
 import { useAnimatedReaction } from "react-native-reanimated";
 
