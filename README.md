@@ -135,9 +135,13 @@ Name            | Type                      | Description |
 goToPage         | (index: number) => void  | go to page  |
 
 #### Props
-Name            | Type                     | Required | Description        |
---------------- |--------------------------|----------|--------------------|
-onPageChanged   |  (index: number) => void | No       | listen tab changed |
+Name                  | Type                            | Required | Description        |
+--------------------- |---------------------------------|----------|--------------------|
+initialPage           | number, SharedValue\<number\>   | No       | set initial page   |
+scrollEnabled         | boolean, SharedValue\<boolean\> | No       | set scroll enabled |
+overScrollMode        | "auto", "always", "never"       | No       |                    |
+keyboardDismissMode   | "none", "on-drag"               | No       |                    |
+onPageChanged         | (index: number) => void         | No       | listen tab changed |
 
 ### TabView
 #### Props
@@ -157,6 +161,12 @@ Name            | Type   | Required | Description         |
 Name            | Type   | Required | Description         |
 --------------- |--------|----------|---------------------|
 ...FlashListProps   |  | no        | props of FlashList |
+
+### TabRefreshControl
+#### Props
+Name            | Type   | Required | Description         |
+--------------- |--------|----------|---------------------|
+...RefreshControlProps   |  | no        | props of RefreshControl |
 
 ### Hooks
 #### useTabView
