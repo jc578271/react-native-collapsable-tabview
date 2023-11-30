@@ -38,6 +38,7 @@ export interface ITabView extends TabViewProps {
 
 export interface IExternalTabView {
   status: Readonly<SharedValue<ETabStatus>>;
+  topScrollPosition: Readonly<SharedValue<number>>;
 }
 
 export interface IItemLayout {
@@ -49,5 +50,5 @@ export enum ETabStatus {
   UNMOUNTED = 0,
   MOUNTED = 1,
   INVISIBLE = 2,
-  VISIBLE = 3
+  VISIBLE = 3,
 }

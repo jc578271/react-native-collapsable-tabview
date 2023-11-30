@@ -10,11 +10,13 @@ import { View, type ViewProps } from "react-native";
 
 export interface TabBarContainerProps extends ViewProps {
   /* tag "worklet" before use */
-  onCollapse?: (value: number) => void;
+  onCollapse?: (offset: number) => void;
+  onBarHeight?: (height: number) => void;
 }
 
 export const TabBarContainer = memo(function TabBarContainer({
   onCollapse,
+  onBarHeight,
   ...props
 }: TabBarContainerProps) {
   const { animatedHeight } = useTabRoot();
@@ -49,8 +51,9 @@ export const TabBarContainer = memo(function TabBarContainer({
     (e: any) => {
       barHeight.value = e.nativeEvent.layout.height;
       props?.onLayout?.(e);
+      onBarHeight?.(e.nativeEvent.layout.height);
     },
-    [props?.onLayout]
+    [props?.onLayout, onBarHeight]
   );
 
   return (

@@ -13,17 +13,25 @@ import {
   type TabBarContainerProps,
 } from "./components/TabBarContainer";
 
-export interface TabHeaderProps extends TabBarContainerProps {
-  HeaderComponent?: ReactNode | undefined;
+interface HeaderProps extends PropsWithChildren<any> {
+  onHeaderHeight?: (height: number) => void;
 }
+
+export type TabHeaderProps = HeaderProps &
+  TabBarContainerProps & {
+    HeaderComponent?: ReactNode | undefined;
+  };
 
 export const TabHeader = memo(function TabHeader({
   HeaderComponent,
+  onHeaderHeight,
   ...rest
 }: TabHeaderProps) {
   return (
     <>
-      <AnimatedTabHeader>{HeaderComponent}</AnimatedTabHeader>
+      <AnimatedTabHeader onHeaderHeight={onHeaderHeight}>
+        {HeaderComponent}
+      </AnimatedTabHeader>
       <TabBarContainer {...rest} />
     </>
   );
@@ -31,7 +39,8 @@ export const TabHeader = memo(function TabHeader({
 
 const AnimatedTabHeader = memo(function AnimatedTabHeader({
   children,
-}: PropsWithChildren<{}>) {
+  onHeaderHeight,
+}: HeaderProps) {
   const { animatedHeight } = useTabRoot();
 
   const { headerHeight, emptyHeaderHeight } = useTabView();
@@ -48,9 +57,13 @@ const AnimatedTabHeader = memo(function AnimatedTabHeader({
     };
   }, []);
 
-  const onHeaderLayout = useCallback((e: any) => {
-    headerHeight.value = e.nativeEvent.layout.height;
-  }, []);
+  const onHeaderLayout = useCallback(
+    (e: any) => {
+      headerHeight.value = e.nativeEvent.layout.height;
+      onHeaderHeight?.(e.nativeEvent.layout.height);
+    },
+    [onHeaderHeight]
+  );
 
   return (
     <Animated.View

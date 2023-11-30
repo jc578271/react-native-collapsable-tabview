@@ -106,6 +106,8 @@ Name            | Type                    | Required | Description              
 --------------- |-------------------------|----------|---------------------------------------------------------|
 HeaderComponent | Element                 | No       | render Header Element                                   |
 onCollapse      | (value: number) => void | No       | listen header collapse  event. tag "worklet" before use |
+onHeaderHeight      | (height: number) => void | No       | listen header height  event                             |
+onBarHeight      | (height: number) => void | No       | listen bar height  event                                |
 ...ViewProps    |                         | No       | extends view props                                      |
 
 ### TabBar
@@ -172,7 +174,7 @@ Name            | Type   | Required | Description         |
 #### useTabView
 ```js
 // wrap <TabView> brefore use this hook
-const { status } = useTabView();
+const { status, topScrollPosition } = useTabView();
 
 useAnimatedReaction(
   () => status.value,
