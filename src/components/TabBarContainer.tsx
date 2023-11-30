@@ -1,24 +1,45 @@
 import React, { memo, useCallback } from "react";
 import { useTabRoot } from "../TabRoot";
 import { useTabView } from "../TabView";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  runOnJS,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 import { styles } from "../styles";
 import { View, type ViewProps } from "react-native";
 
-interface TabBarContainerProps extends ViewProps {}
+export interface TabBarContainerProps extends ViewProps {
+  onCollapse?: (value: number) => void;
+}
 
-export const TabBarContainer = memo(function TabBarContainer(
-  props: TabBarContainerProps
-) {
+export const TabBarContainer = memo(function TabBarContainer({
+  onCollapse,
+  ...props
+}: TabBarContainerProps) {
   const { animatedHeight } = useTabRoot();
 
   const { label, barHeight, emptyBarHeight, minBarTop } = useTabView();
 
+  const onCollapseJS = useCallback(
+    (value: number) => {
+      onCollapse?.(value);
+    },
+    [onCollapse]
+  );
+
   const tabBarStyle = useAnimatedStyle(() => {
+    const top = Math.min(animatedHeight.value, minBarTop.value);
+
+    const collapseValue = interpolate(top, [minBarTop.value, 0], [0, 1]);
+
+    /* on Collapse */
+    runOnJS(onCollapseJS)(collapseValue);
+
     return {
-      top: -Math.min(animatedHeight.value, minBarTop.value),
+      top: -top,
     };
-  }, [label]);
+  }, [label, onCollapse]);
 
   const emptyBarStyle = useAnimatedStyle(() => {
     return {

@@ -8,10 +8,12 @@ import { styles } from "./styles";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useTabView } from "./TabView";
 import { useTabRoot } from "./TabRoot";
-import { TabBarContainer } from "./components/TabBarContainer";
-import type { ViewProps } from "react-native";
+import {
+  TabBarContainer,
+  type TabBarContainerProps,
+} from "./components/TabBarContainer";
 
-export interface TabHeaderProps extends ViewProps {
+export interface TabHeaderProps extends TabBarContainerProps {
   HeaderComponent?: ReactNode | undefined;
 }
 

@@ -102,10 +102,11 @@ export default function App() {
 
 ### TabHeader
 #### Props
-Name            | Type     | Required | Description           |
---------------- |----------|----------|-----------------------|
-HeaderComponent | Element  | No       | render Header Element |
-...ViewProps    |          | No       | extends view props    |
+Name            | Type                    | Required | Description                   |
+--------------- |-------------------------|----------|-------------------------------|
+HeaderComponent | Element                 | No       | render Header Element         |
+onCollapse      | (value: number) => void | No       | listen header collapse  event |
+...ViewProps    |                         | No       | extends view props            |
 
 ### TabBar
 ```ts
