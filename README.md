@@ -1,11 +1,16 @@
-# react-native-collapsible-tabview
+# react-native-collapsable-tabview
 
 This is collapsable tabview package
 
 ## Installation
 
+#### Dependencies
 ```sh
-npm install react-native-collapsible-tabview
+yarn add react-native-reanimated react-native-pager-view @shopify/flash-list
+```
+
+```sh
+yarn add react-native-collapsible-tabview
 ```
 
 ## Basic Usage
