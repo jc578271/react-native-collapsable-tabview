@@ -26,8 +26,9 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
     );
 
     const containerStyle = useAnimatedStyle(() => {
+      const minHeight = listHeight.value + minBarTop.value;
       return {
-        minHeight: listHeight.value + minBarTop.value,
+        minHeight: minHeight,
       };
     });
 
