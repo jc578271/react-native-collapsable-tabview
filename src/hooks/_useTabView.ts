@@ -1,10 +1,9 @@
 import Animated, {
-  type AnimatedRef,
   type SharedValue,
   useAnimatedRef,
   useSharedValue,
 } from "react-native-reanimated";
-import { useMemo } from "react";
+import { useMemo, type RefObject } from "react";
 import { makeid } from "../utils/makeid";
 import PagerView from "react-native-pager-view";
 import { ROOT_ID } from "../constant";
@@ -15,7 +14,7 @@ interface IUseTabView {
   tabs: SharedValue<string[]>;
   animatedIndex: SharedValue<number>;
   staticIndex: SharedValue<number>;
-  pagerViewRef: AnimatedRef<PagerView & Animated.ScrollView>;
+  pagerViewRef: RefObject<PagerView & Animated.ScrollView>;
   headerHeight: SharedValue<number>;
   barHeight: SharedValue<number>;
 }

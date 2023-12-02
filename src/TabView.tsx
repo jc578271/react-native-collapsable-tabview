@@ -32,6 +32,7 @@ export const TabView = memo(function TabItem({
     animatedIndex,
     tabs,
     emptyBarHeight: parentEmptyBarHeight,
+    emptyHeaderHeight: parentEmptyHeaderHeight,
     minBarTop: parentMinBarTop,
     rootIndex: parentRootIndex,
     rootAnimatedIndex: parentRootAnimatedIndex,
@@ -57,15 +58,15 @@ export const TabView = memo(function TabItem({
   const parentAnimatedIndex = useDerivedValue(() => animatedIndex.value, []);
 
   const emptyHeaderHeight = useDerivedValue(() => {
-    return parentEmptyBarHeight.value + parentBarHeight.value;
+    return parentEmptyHeaderHeight.value + headerHeight.value;
   }, []);
 
   const emptyBarHeight = useDerivedValue(() => {
-    return emptyHeaderHeight.value + value.headerHeight.value;
+    return parentEmptyBarHeight.value + barHeight.value;
   }, []);
 
   const minBarTop = useDerivedValue(
-    () => parentMinBarTop.value + value.headerHeight.value,
+    () => parentMinBarTop.value + value.headerHeight.value - value.barHeight.value,
     []
   );
 

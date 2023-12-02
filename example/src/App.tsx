@@ -17,7 +17,7 @@ import { useAnimatedReaction } from "react-native-reanimated";
 
 const TabItem = memo(function TabItem({ item, ...props }: IRenderTabBarItem) {
   return (
-    <TouchableOpacity {...props}>
+    <TouchableOpacity {...props} style={{paddingHorizontal: 12}}>
       <Text>{item}</Text>
     </TouchableOpacity>
   );
@@ -33,7 +33,7 @@ export default function App() {
       <TabRoot>
         <TabHeader
           HeaderComponent={
-            <View style={{ height: 50, backgroundColor: "blue" }} />
+            <View style={{ height: 50, backgroundColor: "blue", opacity: 0.4 }} />
           }
           style={{ flexDirection: "row", backgroundColor: "cyan" }}
         >
@@ -178,7 +178,7 @@ const MyTabView = memo(function MyTabView() {
     <TabFlashList
       ListEmptyComponent={
         <View
-          style={{ backgroundColor: "red", height: 100, width: 100, top: 30 }}
+          style={{ backgroundColor: "red", height: 100, width: 100 }}
         />
       }
       renderItem={(_) => <Text>ItemHI</Text>}
