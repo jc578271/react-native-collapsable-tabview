@@ -22,10 +22,11 @@ const _TabScrollView = forwardRef<Animated.ScrollView, AnimatedScrollViewProps>(
     );
 
     const containerStyle = useAnimatedStyle(() => {
+      const minHeight = listHeight.value + minBarTop.value
       return {
-        minHeight: listHeight.value + minBarTop.value,
+        minHeight: minHeight,
       };
-    }, []);
+    });
 
     return (
       <View style={{ flex: 1, overflow: "scroll" }} onLayout={onListLayout}>

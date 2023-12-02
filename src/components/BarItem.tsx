@@ -39,7 +39,7 @@ export const BarItem = memo(function BarItem({
 
   /* onPress item */
   const onTabPress = useCallback(
-    (index: number) => () => {
+    (index: number) => {
       if (tabViewId === ROOT_ID) {
         pagerViewRef.current?.setPage(index);
       } else {

@@ -102,10 +102,13 @@ export default function App() {
 
 ### TabHeader
 #### Props
-Name            | Type     | Required | Description           |
---------------- |----------|----------|-----------------------|
-HeaderComponent | Element  | No       | render Header Element |
-...ViewProps    |          | No       | extends view props    |
+Name            | Type                    | Required | Description                                             |
+--------------- |-------------------------|----------|---------------------------------------------------------|
+HeaderComponent | Element                 | No       | render Header Element                                   |
+onCollapse      | (value: number) => void | No       | listen header collapse  event. tag "worklet" before use |
+onHeaderHeight      | (height: number) => void | No       | listen header height  event                             |
+onBarHeight      | (height: number) => void | No       | listen bar height  event                                |
+...ViewProps    |                         | No       | extends view props                                      |
 
 ### TabBar
 ```ts
@@ -134,9 +137,13 @@ Name            | Type                      | Description |
 goToPage         | (index: number) => void  | go to page  |
 
 #### Props
-Name            | Type                     | Required | Description        |
---------------- |--------------------------|----------|--------------------|
-onPageChanged   |  (index: number) => void | No       | listen tab changed |
+Name                  | Type                            | Required | Description        |
+--------------------- |---------------------------------|----------|--------------------|
+initialPage           | number, SharedValue\<number\>   | No       | set initial page   |
+scrollEnabled         | boolean, SharedValue\<boolean\> | No       | set scroll enabled |
+overScrollMode        | "auto", "always", "never"       | No       |                    |
+keyboardDismissMode   | "none", "on-drag"               | No       |                    |
+onPageChanged         | (index: number) => void         | No       | listen tab changed |
 
 ### TabView
 #### Props
@@ -157,11 +164,17 @@ Name            | Type   | Required | Description         |
 --------------- |--------|----------|---------------------|
 ...FlashListProps   |  | no        | props of FlashList |
 
+### TabRefreshControl
+#### Props
+Name            | Type   | Required | Description         |
+--------------- |--------|----------|---------------------|
+...RefreshControlProps   |  | no        | props of RefreshControl |
+
 ### Hooks
 #### useTabView
 ```js
 // wrap <TabView> brefore use this hook
-const { status } = useTabView();
+const { status, topScrollPosition } = useTabView();
 
 useAnimatedReaction(
   () => status.value,

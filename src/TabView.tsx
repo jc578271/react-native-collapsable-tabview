@@ -124,6 +124,7 @@ export const TabView = memo(function TabItem({
   const externalValue = useMemo(
     () => ({
       status,
+      topScrollPosition: minBarTop
     }),
     []
   );

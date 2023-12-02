@@ -1,24 +1,45 @@
 import React, { memo, useCallback } from "react";
 import { useTabRoot } from "../TabRoot";
 import { useTabView } from "../TabView";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 import { styles } from "../styles";
 import { View, type ViewProps } from "react-native";
 
-interface TabBarContainerProps extends ViewProps {}
+export interface TabBarContainerProps extends ViewProps {
+  /* tag "worklet" before use */
+  onCollapse?: (offset: number) => void;
+  onBarHeight?: (height: number) => void;
+}
 
-export const TabBarContainer = memo(function TabBarContainer(
-  props: TabBarContainerProps
-) {
+export const TabBarContainer = memo(function TabBarContainer({
+  onCollapse,
+  onBarHeight,
+  ...props
+}: TabBarContainerProps) {
   const { animatedHeight } = useTabRoot();
 
-  const { label, barHeight, emptyBarHeight, minBarTop } = useTabView();
+  const { label, barHeight, emptyBarHeight, minBarTop, emptyHeaderHeight } =
+    useTabView();
 
   const tabBarStyle = useAnimatedStyle(() => {
+    const top = Math.min(animatedHeight.value, minBarTop.value);
+
+    const collapseValue = interpolate(
+      top,
+      [emptyHeaderHeight.value, emptyHeaderHeight.value, minBarTop.value],
+      [0, 0, 1]
+    );
+
+    /* on Collapse */
+    onCollapse?.(collapseValue);
+
     return {
-      top: -Math.min(animatedHeight.value, minBarTop.value),
+      top: -top,
     };
-  }, [label]);
+  }, [label, onCollapse]);
 
   const emptyBarStyle = useAnimatedStyle(() => {
     return {
@@ -30,8 +51,9 @@ export const TabBarContainer = memo(function TabBarContainer(
     (e: any) => {
       barHeight.value = e.nativeEvent.layout.height;
       props?.onLayout?.(e);
+      onBarHeight?.(e.nativeEvent.layout.height);
     },
-    [props?.onLayout]
+    [props?.onLayout, onBarHeight]
   );
 
   return (

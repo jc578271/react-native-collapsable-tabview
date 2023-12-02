@@ -10,6 +10,8 @@ import { useTabView } from "./TabView";
 import { usePageScrollHandler } from "./hooks/usePageScrollHandler";
 import Animated, {
   runOnJS,
+  type SharedValue,
+  useAnimatedProps,
   useAnimatedScrollHandler,
 } from "react-native-reanimated";
 import RNPagerView from "react-native-pager-view";
@@ -23,8 +25,18 @@ export interface TabPager {
 }
 
 export interface TabPagerProps extends PropsWithChildren<{}> {
+  initialPage?: number | SharedValue<number>;
+  scrollEnabled?: boolean | SharedValue<boolean>;
+  overScrollMode?: "auto" | "always" | "never";
+  keyboardDismissMode?: "none" | "on-drag";
   onPageChanged?: (index: number) => void;
 }
+
+const getValue = <T extends number | boolean>(value: T | SharedValue<T>) => {
+  "worklet";
+  if (typeof value === "number" || typeof value === "boolean") return value;
+  return value.value;
+};
 
 const _TabPager = forwardRef<TabPager, TabPagerProps>(function TabPager(
   props,
@@ -71,71 +83,109 @@ const _TabPager = forwardRef<TabPager, TabPagerProps>(function TabPager(
 
 export const TabPager = memo(_TabPager);
 
-const Pager = memo(({ children, onPageChanged }: TabPagerProps) => {
-  const { animatedIndex, staticIndex, pagerViewRef } = useTabView();
+const Pager = memo(
+  ({
+    children,
+    onPageChanged,
+    scrollEnabled = true,
+    initialPage = 0,
+    ...rest
+  }: TabPagerProps) => {
+    const { animatedIndex, staticIndex, pagerViewRef } = useTabView();
 
-  const onScroll = usePageScrollHandler(
-    {
-      onPageScroll: (e: any) => {
+    const onScroll = usePageScrollHandler(
+      {
+        onPageScroll: (e: any) => {
+          "worklet";
+          animatedIndex.value = e.offset + e.position;
+        },
+      },
+      []
+    );
+
+    const onPageSelected = useCallback(
+      (e: any) => {
         "worklet";
-        animatedIndex.value = e.offset + e.position;
+        staticIndex.value = e.nativeEvent.position;
+        onPageChanged?.(e.nativeEvent.position);
       },
-    },
-    []
-  );
+      [onPageChanged]
+    );
 
-  const onPageSelected = useCallback(
-    (e: any) => {
-      "worklet";
-      staticIndex.value = e.nativeEvent.position;
-      onPageChanged?.(e.nativeEvent.position);
-    },
-    [onPageChanged]
-  );
+    /* animated props */
+    const animatedProps = useAnimatedProps(
+      () => ({
+        initialPage: getValue(initialPage),
+        scrollEnabled: getValue(scrollEnabled),
+      }),
+      [initialPage, scrollEnabled]
+    ) as any;
 
-  return (
-    <AnimatedPagerView
-      ref={pagerViewRef}
-      style={{ flex: 1 }}
-      onPageScroll={onScroll}
-      onPageSelected={onPageSelected}
-    >
-      {children}
-    </AnimatedPagerView>
-  );
-});
+    return (
+      <AnimatedPagerView
+        ref={pagerViewRef}
+        animatedProps={animatedProps}
+        style={{ flex: 1 }}
+        onPageScroll={onScroll}
+        onPageSelected={onPageSelected}
+        {...rest}
+      >
+        {children}
+      </AnimatedPagerView>
+    );
+  }
+);
 
-const Scroll = memo(({ children, onPageChanged }: TabPagerProps) => {
-  const { animatedIndex, staticIndex, pagerViewRef } = useTabView();
+const Scroll = memo(
+  ({
+    children,
+    onPageChanged,
+    overScrollMode,
+    keyboardDismissMode,
+    initialPage = 0,
+  }: TabPagerProps) => {
+    const { animatedIndex, staticIndex, pagerViewRef } = useTabView();
 
-  const { width } = useWindow();
+    const { width } = useWindow();
 
-  const onChangeTabJS = useCallback(
-    (index: number) => {
-      onPageChanged?.(index);
-    },
-    [onPageChanged]
-  );
-
-  const onScroll = useAnimatedScrollHandler(
-    {
-      onScroll: (e) => {
-        animatedIndex.value = e.contentOffset.x / width.value;
-        staticIndex.value = e.contentOffset.x / width.value;
-        runOnJS(onChangeTabJS)(e.contentOffset.x / width.value);
+    const onChangeTabJS = useCallback(
+      (index: number) => {
+        onPageChanged?.(index);
       },
-    },
-    [onPageChanged]
-  );
+      [onPageChanged]
+    );
 
-  return (
-    <Animated.ScrollView
-      ref={pagerViewRef}
-      onScroll={onScroll}
-      scrollEnabled={false}
-      horizontal={true}
-    >
-      {children}
-    </Animated.ScrollView>
-  );
-});
+    const onScroll = useAnimatedScrollHandler(
+      {
+        onScroll: (e) => {
+          animatedIndex.value = e.contentOffset.x / width.value;
+          staticIndex.value = e.contentOffset.x / width.value;
+          runOnJS(onChangeTabJS)(e.contentOffset.x / width.value);
+        },
+      },
+      [onPageChanged]
+    );
+
+    const animatedProps = useAnimatedProps(
+      () => ({
+        contentOffset: { x: getValue(initialPage) * width.value, y: 0 },
+      }),
+      [initialPage]
+    ) as any;
+
+    return (
+      <Animated.ScrollView
+        ref={pagerViewRef}
+        // @ts-ignore
+        animatedProps={animatedProps}
+        onScroll={onScroll}
+        scrollEnabled={false}
+        horizontal={true}
+        overScrollMode={overScrollMode}
+        keyboardDismissMode={keyboardDismissMode}
+      >
+        {children}
+      </Animated.ScrollView>
+    );
+  }
+);
