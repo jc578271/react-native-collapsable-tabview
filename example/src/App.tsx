@@ -190,8 +190,7 @@ const MyTabView = memo(function MyTabView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    paddingTop: 50,
   },
   box: {
     width: 60,
