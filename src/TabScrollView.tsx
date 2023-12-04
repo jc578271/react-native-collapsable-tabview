@@ -1,19 +1,19 @@
 import React, { forwardRef, memo } from "react";
 import Animated, {
-  type AnimatedScrollViewProps,
+  type AnimateProps,
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { useTabView } from "./TabView";
 import { useAutoScroll } from "./hooks/useAutoScroll";
-import { View } from "react-native";
+import { View, type ScrollViewProps } from "react-native";
 
-const _TabScrollView = forwardRef<Animated.ScrollView, AnimatedScrollViewProps>(
+const _TabScrollView = forwardRef<Animated.ScrollView, AnimateProps<ScrollViewProps>>(
   function TabScrollView({ children, ...props }, ref) {
-    const { emptyBarHeight, minBarTop } = useTabView();
+    const { emptyHeaderHeight, minBarTop } = useTabView();
 
     const animatedStyle = useAnimatedStyle(() => {
       return {
-        height: emptyBarHeight.value,
+        height: emptyHeaderHeight.value,
       };
     }, []);
 

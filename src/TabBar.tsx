@@ -140,6 +140,7 @@ export const TabBar = memo(function TabBar({
       >
         {tabs.map((item, index) => (
           <BarItem
+            key={index}
             index={index}
             title={item}
             renderItem={renderItem}

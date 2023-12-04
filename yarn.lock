@@ -14752,7 +14752,7 @@ __metadata:
     react-dom: 18.2.0
     react-native: 0.72.6
     react-native-pager-view: ^6.2.2
-    react-native-reanimated: ^3.5.4
+    react-native-reanimated: 3.3.0
     react-native-web: ~0.19.6
   languageName: unknown
   linkType: soft
@@ -14781,7 +14781,7 @@ __metadata:
     react-native: 0.72.6
     react-native-builder-bob: ^0.20.0
     react-native-pager-view: ^6.2.2
-    react-native-reanimated: ^3.5.4
+    react-native-reanimated: 3.3.0
     release-it: ^15.0.0
     typescript: ^5.0.2
   peerDependencies:
@@ -14803,9 +14803,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:^3.5.4":
-  version: 3.6.0
-  resolution: "react-native-reanimated@npm:3.6.0"
+"react-native-reanimated@npm:3.3.0":
+  version: 3.3.0
+  resolution: "react-native-reanimated@npm:3.3.0"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
@@ -14820,7 +14820,7 @@ __metadata:
     "@babel/plugin-transform-template-literals": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: c5aad292360ea3e6c6a92329aba67037a8ce89a84bf7d0ebc01f7064cd24e7df22078bd3e2c9439fa4bf74f1290f0a3e5101e8006e78781b59ae0bc704ff7734
+  checksum: 58096b28caef8af261c446eccb91a5a74caa303ba3520b1a2767c5b922b3d19b9a58612ab9b517a959c1b562b2e76e4cf4a8ffb21136960ed63375f6a4c37d1e
   languageName: node
   linkType: hard
 

@@ -21,15 +21,17 @@ export const TabBarContainer = memo(function TabBarContainer({
 }: TabBarContainerProps) {
   const { animatedHeight } = useTabRoot();
 
-  const { label, barHeight, emptyBarHeight, minBarTop, emptyHeaderHeight } =
+  const { barHeight, emptyBarHeight, minBarTop, emptyHeaderHeight } =
     useTabView();
 
   const tabBarStyle = useAnimatedStyle(() => {
     const top = Math.min(animatedHeight.value, minBarTop.value);
+    const isVisible = animatedHeight.value > minBarTop.value;
+    const minTop = emptyHeaderHeight.value - emptyBarHeight.value;
 
     const collapseValue = interpolate(
       top,
-      [emptyHeaderHeight.value, emptyHeaderHeight.value, minBarTop.value],
+      [minTop, minTop, minBarTop.value],
       [0, 0, 1]
     );
 
@@ -37,15 +39,15 @@ export const TabBarContainer = memo(function TabBarContainer({
     onCollapse?.(collapseValue);
 
     return {
-      top: -top,
+      opacity: isVisible ? 1 : 0
     };
-  }, [label, onCollapse]);
+  }, [onCollapse]);
 
   const emptyBarStyle = useAnimatedStyle(() => {
     return {
       height: emptyBarHeight.value,
     };
-  }, [label]);
+  }, []);
 
   const onLayout = useCallback(
     (e: any) => {

@@ -13,11 +13,11 @@ const AnimatedFlashList =
 
 const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
   function TabViewFlashList(props, ref) {
-    const { emptyBarHeight, minBarTop } = useTabView();
+    const { emptyHeaderHeight, minBarTop } = useTabView();
 
     const animatedStyle = useAnimatedStyle(() => {
       return {
-        height: emptyBarHeight.value,
+        height: emptyHeaderHeight.value,
       };
     }, []);
 
@@ -65,11 +65,11 @@ const EmptyView = memo(function EmptyView({
   listHeight: SharedValue<number>;
   children: any;
 }) {
-  const { minBarTop, emptyBarHeight } = useTabView();
+  const { minBarTop, emptyHeaderHeight } = useTabView();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      top: -listHeight.value - minBarTop.value + emptyBarHeight.value,
+      top: -listHeight.value - minBarTop.value + emptyHeaderHeight.value,
     };
   }, []);
 

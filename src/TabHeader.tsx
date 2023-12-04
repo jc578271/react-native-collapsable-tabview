@@ -4,6 +4,7 @@ import React, {
   type ReactNode,
   useCallback,
 } from "react";
+import { View } from "react-native";
 import { styles } from "./styles";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useTabView } from "./TabView";
@@ -31,6 +32,7 @@ export const TabHeader = memo(function TabHeader({
     <>
       <AnimatedTabHeader onHeaderHeight={onHeaderHeight}>
         {HeaderComponent}
+        <View {...rest} />
       </AnimatedTabHeader>
       <TabBarContainer {...rest} />
     </>
