@@ -23,6 +23,7 @@ export interface TabBarProps {
   underlineStyle?: ViewStyle;
   tabBarStyle?: ViewStyle;
   renderItem: (params: IRenderTabBarItem) => React.ReactElement | null;
+  initialTabs?: string[];
 }
 
 export const TabBar = memo(function TabBar({
@@ -32,11 +33,12 @@ export const TabBar = memo(function TabBar({
   underlineStyle,
   tabBarStyle,
   renderItem,
+  initialTabs,
 }: TabBarProps) {
   const { tabs: aTabs, animatedIndex } = useTabView();
 
   /* set tabs from pager */
-  const [tabs, setTabs] = useState(aTabs.value);
+  const [tabs, setTabs] = useState(initialTabs || aTabs.value);
   useAnimatedReaction(
     () => aTabs.value,
     (aTabs) => {
@@ -119,7 +121,7 @@ export const TabBar = memo(function TabBar({
         ? {
             minWidth: windowWidth.value,
           }
-        : { minWidth: 0 },
+        : {},
     [display]
   );
 
