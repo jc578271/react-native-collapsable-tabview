@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  memo,
-  type PropsWithChildren,
-  useContext,
-  useMemo,
-} from "react";
+import React, { createContext, memo, useContext, useMemo } from "react";
 import type { IExternalTabView, ITabView, TabViewProps } from "./types";
 import { ETabStatus } from "./types";
 import { useTabRoot } from "./TabRoot";
@@ -25,7 +19,7 @@ export const TabView = memo(function TabItem({
   children,
   initialHeight,
   ...props
-}: PropsWithChildren<TabViewProps>) {
+}: TabViewProps) {
   const {
     tabViewId,
     headerHeight,

@@ -1,7 +1,7 @@
 import React, {
   createContext,
   memo,
-  type PropsWithChildren,
+  type ReactNode,
   useContext,
   useMemo,
 } from "react";
@@ -13,15 +13,18 @@ import { ROOT_ID } from "./constant";
 
 const Context = createContext<IProvider | null>(null);
 
-export const TabRoot = memo(function TabRoot({
-  children,
-  initialHeight,
-}: PropsWithChildren<{
+interface TabRootProps {
+  children?: ReactNode | undefined;
   initialHeight?: {
     header?: number;
     bar?: number;
   };
-}>) {
+}
+
+export const TabRoot = memo(function TabRoot({
+  children,
+  initialHeight,
+}: TabRootProps) {
   /* get value same as TabView */
   const tabViewValue = _useTabView(true, initialHeight);
 
