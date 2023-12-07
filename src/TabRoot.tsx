@@ -15,9 +15,15 @@ const Context = createContext<IProvider | null>(null);
 
 export const TabRoot = memo(function TabRoot({
   children,
-}: PropsWithChildren<{}>) {
+  initialHeight,
+}: PropsWithChildren<{
+  initialHeight?: {
+    header?: number;
+    bar?: number;
+  };
+}>) {
   /* get value same as TabView */
-  const tabViewValue = _useTabView(true);
+  const tabViewValue = _useTabView(true, initialHeight);
 
   const { headerHeight, barHeight } = tabViewValue;
 
@@ -32,7 +38,10 @@ export const TabRoot = memo(function TabRoot({
   const emptyHeaderHeight = useSharedValue(0);
   const emptyBarHeight = useSharedValue(0);
 
-  const minBarTop = useDerivedValue(() => headerHeight.value - barHeight.value, []);
+  const minBarTop = useDerivedValue(
+    () => headerHeight.value - barHeight.value,
+    []
+  );
   const rootIndex = useSharedValue("0");
   const rootAnimatedIndex = useSharedValue("0");
 

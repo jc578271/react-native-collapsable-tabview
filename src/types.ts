@@ -6,6 +6,10 @@ import Animated from "react-native-reanimated";
 export interface TabViewProps {
   label: string;
   children?: ReactNode | undefined;
+  initialHeight?: {
+    header?: number;
+    bar?: number;
+  };
 }
 
 export interface IProvider extends ITabView {

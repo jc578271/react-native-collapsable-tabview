@@ -19,13 +19,19 @@ interface IUseTabView {
   barHeight: SharedValue<number>;
 }
 
-export const _useTabView = (isRoot?: boolean): IUseTabView => {
+export const _useTabView = (
+  isRoot?: boolean,
+  initialHeight?: {
+    header?: number;
+    bar?: number;
+  }
+): IUseTabView => {
   const tabViewId = useMemo(() => (isRoot ? ROOT_ID : makeid(6)), [isRoot]);
   const currentTab = useSharedValue<string | null>(null);
   const animatedIndex = useSharedValue<number>(0);
   const staticIndex = useSharedValue<number>(0);
-  const headerHeight = useSharedValue(0);
-  const barHeight = useSharedValue(0);
+  const headerHeight = useSharedValue(initialHeight?.header || 0);
+  const barHeight = useSharedValue(initialHeight?.bar || 0);
   const tabs = useSharedValue<string[]>([]);
   const pagerViewRef = useAnimatedRef<PagerView & Animated.ScrollView>();
 

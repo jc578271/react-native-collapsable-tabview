@@ -23,6 +23,7 @@ const ExternalContext = createContext<IExternalTabView | null>(null);
 
 export const TabView = memo(function TabItem({
   children,
+  initialHeight,
   ...props
 }: PropsWithChildren<TabViewProps>) {
   const {
@@ -41,7 +42,7 @@ export const TabView = memo(function TabItem({
 
   const { label } = props;
 
-  const value = _useTabView();
+  const value = _useTabView(false, initialHeight);
 
   /* style Item View */
   const { width } = useWindow();
@@ -66,7 +67,8 @@ export const TabView = memo(function TabItem({
   }, []);
 
   const minBarTop = useDerivedValue(
-    () => parentMinBarTop.value + value.headerHeight.value - value.barHeight.value,
+    () =>
+      parentMinBarTop.value + value.headerHeight.value - value.barHeight.value,
     []
   );
 
@@ -125,7 +127,7 @@ export const TabView = memo(function TabItem({
   const externalValue = useMemo(
     () => ({
       status,
-      topScrollPosition: minBarTop
+      topScrollPosition: minBarTop,
     }),
     []
   );
