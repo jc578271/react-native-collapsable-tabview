@@ -108,6 +108,7 @@ export const TabView = memo(function TabItem({
   );
 
   const statusHandler = useRef<((status: ETabStatus) => void) | null>(null);
+  const statusDeps = useRef<any[]>([]);
 
   const { animatedHeight } = useTabRoot();
 
@@ -122,11 +123,12 @@ export const TabView = memo(function TabItem({
 
   const jsCallback = useCallback((status: ETabStatus) => {
     statusHandler.current?.(status);
-  }, []);
+  }, statusDeps.current);
 
   const onStatusChange = useCallback(
-    (handler: (status: ETabStatus) => void) => {
+    (handler: (status: ETabStatus) => void, deps?: any[]) => {
       statusHandler.current = handler;
+      if (deps) statusDeps.current = deps;
     },
     []
   );
@@ -150,7 +152,7 @@ export const TabView = memo(function TabItem({
         runOnJS(jsCallback)(ETabStatus.INVISIBLE);
       }
     },
-    []
+    statusDeps.current
   );
 
   const externalValue = useMemo(

@@ -42,7 +42,7 @@ export interface IExternalTabView {
   status: Readonly<SharedValue<ETabStatus>>;
   topScrollPosition: Readonly<SharedValue<number>>;
   animatedHeaderHeight: Readonly<SharedValue<number>>;
-  onStatusChange: (handler: (status: ETabStatus) => void) => void;
+  onStatusChange: (handler: (status: ETabStatus) => void, deps?: any[]) => void;
 }
 
 export interface IItemLayout {
