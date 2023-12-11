@@ -99,6 +99,17 @@ export const TabView = memo(function TabItem({
     []
   );
 
+  const { animatedHeight } = useTabRoot();
+
+  const externalHeaderHeight = useDerivedValue(
+    () =>
+      Math.max(
+        emptyHeaderHeight.value - animatedHeight.value,
+        emptyBarHeight.value
+      ),
+    []
+  );
+
   useAnimatedReaction(
     () => visible.value,
     (visible) => {
@@ -122,6 +133,7 @@ export const TabView = memo(function TabItem({
     () => ({
       status,
       topScrollPosition: minBarTop,
+      animatedHeaderHeight: externalHeaderHeight,
     }),
     []
   );

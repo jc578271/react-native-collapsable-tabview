@@ -41,6 +41,7 @@ export interface ITabView extends TabViewProps {
 export interface IExternalTabView {
   status: Readonly<SharedValue<ETabStatus>>;
   topScrollPosition: Readonly<SharedValue<number>>;
+  animatedHeaderHeight: Readonly<SharedValue<number>>;
 }
 
 export interface IItemLayout {
