@@ -1,10 +1,18 @@
-import React, { createContext, memo, useContext, useMemo } from "react";
+import React, {
+  createContext,
+  memo,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+} from "react";
 import type { IExternalTabView, ITabView, TabViewProps } from "./types";
 import { ETabStatus } from "./types";
 import { useTabRoot } from "./TabRoot";
 import { _useTabView } from "./hooks/_useTabView";
 import { useWindow } from "./hooks/useWindow";
 import Animated, {
+  runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
@@ -99,6 +107,8 @@ export const TabView = memo(function TabItem({
     []
   );
 
+  const statusHandler = useRef<((status: ETabStatus) => void) | null>(null);
+
   const { animatedHeight } = useTabRoot();
 
   const externalHeaderHeight = useDerivedValue(
@@ -110,20 +120,34 @@ export const TabView = memo(function TabItem({
     []
   );
 
+  const jsCallback = useCallback((status: ETabStatus) => {
+    statusHandler.current?.(status);
+  }, []);
+
+  const onStatusChange = useCallback(
+    (handler: (status: ETabStatus) => void) => {
+      statusHandler.current = handler;
+    },
+    []
+  );
+
   useAnimatedReaction(
     () => visible.value,
     (visible) => {
+      if (status.value === ETabStatus.UNMOUNTED && !visible)
+        return runOnJS(jsCallback)(ETabStatus.UNMOUNTED);
+
       if (status.value === ETabStatus.UNMOUNTED && visible) {
         status.value = ETabStatus.MOUNTED;
-        return;
+        return runOnJS(jsCallback)(ETabStatus.MOUNTED);
       }
 
-      if (status.value === ETabStatus.MOUNTED) {
-        if (visible) {
-          status.value = ETabStatus.VISIBLE;
-        } else {
-          status.value = ETabStatus.INVISIBLE;
-        }
+      if (visible) {
+        status.value = ETabStatus.VISIBLE;
+        runOnJS(jsCallback)(ETabStatus.VISIBLE);
+      } else {
+        status.value = ETabStatus.INVISIBLE;
+        runOnJS(jsCallback)(ETabStatus.INVISIBLE);
       }
     },
     []
@@ -134,6 +158,7 @@ export const TabView = memo(function TabItem({
       status,
       topScrollPosition: minBarTop,
       animatedHeaderHeight: externalHeaderHeight,
+      onStatusChange: onStatusChange,
     }),
     []
   );
