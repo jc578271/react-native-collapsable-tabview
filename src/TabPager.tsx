@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
 } from "react";
 import { useTabView } from "./TabView";
 import { usePageScrollHandler } from "./hooks/usePageScrollHandler";
@@ -39,15 +40,22 @@ const getValue = <T extends number | boolean>(value: T | SharedValue<T>) => {
 };
 
 const _TabPager = forwardRef<TabPager, TabPagerProps>(function TabPager(
-  props,
+  { children: pChildren, ...props },
   ref
 ) {
   const { tabViewId, tabs, pagerViewRef } = useTabView();
+  /* return children with "label" prop */
+  const children = useMemo(() => {
+    if (Array.isArray(pChildren))
+      return pChildren.filter((child) => !!child?.props?.label);
+    if (!(pChildren as any)?.props?.label) return [];
+    return [pChildren];
+  }, [pChildren]);
 
   /* set tabs with provider tabs */
   useEffect(() => {
-    tabs.value = (props.children as any[]).map((child) => child.props.label);
-  }, [(props.children as any[])?.length]);
+    tabs.value = children.map((child) => child?.props?.label);
+  }, [children.length]);
 
   /* externalRef */
   const { width } = useWindow();
@@ -75,10 +83,10 @@ const _TabPager = forwardRef<TabPager, TabPagerProps>(function TabPager(
   );
 
   if (tabViewId === ROOT_ID) {
-    return <Pager {...props} />;
+    return <Pager {...props} children={children} />;
   }
 
-  return <Scroll {...props} />;
+  return <Scroll {...props} children={children} />;
 });
 
 export const TabPager = memo(_TabPager);
