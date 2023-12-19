@@ -24,7 +24,7 @@ export function useAutoScroll(
   ref: RefObject<Animated.ScrollView & FlashList<any>>
 ): IUseAutoScroll {
   const { animatedScrollValue } = useTabRoot();
-  const { minBarTop, rootIndex, rootAnimatedIndex, label } = useTabView();
+  const { minBarTop, rootIndex, rootAnimatedIndex } = useTabView();
   const scrollViewRef =
     ref || useRef<Animated.ScrollView & FlashList<any>>(null);
 
@@ -35,15 +35,14 @@ export function useAutoScroll(
   const onScroll = useAnimatedScrollHandler(
     {
       onScroll: (e) => {
-        currentScrollValue.value = e.contentOffset.y;
-
         /* only set animatedScrollValue when current index */
         if (rootIndex.value === rootAnimatedIndex.value) {
           animatedScrollValue.value = e.contentOffset.y;
+          currentScrollValue.value = e.contentOffset.y;
         }
       },
     },
-    [label]
+    []
   );
 
   /* auto scroll for other items */
@@ -61,7 +60,7 @@ export function useAutoScroll(
         timeout
       );
     },
-    [scrollViewRef, label]
+    [scrollViewRef]
   );
 
   /* get animated height from top of scroll view to top of tab view */
