@@ -3,6 +3,7 @@ import { useTabRoot } from "../TabRoot";
 import { useTabView } from "../TabView";
 import Animated, {
   interpolate,
+  useAnimatedProps,
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { styles } from "../styles";
@@ -39,9 +40,16 @@ export const TabBarContainer = memo(function TabBarContainer({
     onCollapse?.(collapseValue);
 
     return {
-      opacity: isVisible ? 1 : 0
+      opacity: isVisible ? 1 : 0,
     };
   }, [onCollapse]);
+
+  const tabBarProps: any = useAnimatedProps(() => {
+    const isVisible = animatedHeight.value > minBarTop.value;
+    return {
+      pointerEvents: isVisible ? "auto" : "none",
+    };
+  }, []);
 
   const emptyBarStyle = useAnimatedStyle(() => {
     return {
@@ -59,7 +67,10 @@ export const TabBarContainer = memo(function TabBarContainer({
   );
 
   return (
-    <Animated.View style={[styles.bar, tabBarStyle]}>
+    <Animated.View
+      animatedProps={tabBarProps}
+      style={[styles.bar, tabBarStyle]}
+    >
       <Animated.View style={emptyBarStyle} />
       <View {...props} onLayout={onLayout} />
     </Animated.View>
