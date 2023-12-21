@@ -16,6 +16,7 @@ import {
 
 interface HeaderProps extends PropsWithChildren<any> {
   onHeaderHeight?: (height: number) => void;
+  isStickyBar?: boolean;
 }
 
 export type TabHeaderProps = HeaderProps &
@@ -26,6 +27,7 @@ export type TabHeaderProps = HeaderProps &
 export const TabHeader = memo(function TabHeader({
   HeaderComponent,
   onHeaderHeight,
+  isStickyBar = true,
   ...rest
 }: TabHeaderProps) {
   return (
@@ -34,7 +36,7 @@ export const TabHeader = memo(function TabHeader({
         {HeaderComponent}
         <View {...rest} />
       </AnimatedTabHeader>
-      <TabBarContainer {...rest} />
+      {isStickyBar ? <TabBarContainer {...rest} /> : null}
     </>
   );
 });
