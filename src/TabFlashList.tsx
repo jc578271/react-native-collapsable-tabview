@@ -7,6 +7,7 @@ import Animated, {
 import { useTabView } from "./TabView";
 import { useAutoScroll } from "./hooks/useAutoScroll";
 import { View } from "react-native";
+import { useTabRoot } from "./TabRoot";
 
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<any>>(RNFlashList);
@@ -14,6 +15,7 @@ const AnimatedFlashList =
 const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
   function TabViewFlashList(props, ref) {
     const { emptyHeaderHeight, minBarTop } = useTabView();
+    const { velocity } = useTabRoot();
 
     const animatedStyle = useAnimatedStyle(() => {
       return {
@@ -26,7 +28,7 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
     );
 
     const containerStyle = useAnimatedStyle(() => {
-      const minHeight = listHeight.value + minBarTop.value;
+      const minHeight = listHeight.value + minBarTop.value / velocity;
       return {
         minHeight: minHeight,
       };
@@ -66,12 +68,13 @@ const EmptyView = memo(function EmptyView({
   children: any;
 }) {
   const { minBarTop, emptyHeaderHeight } = useTabView();
+  const { velocity } = useTabRoot();
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      top: -listHeight.value - minBarTop.value + emptyHeaderHeight.value,
+      top: -listHeight.value - minBarTop.value / velocity + emptyHeaderHeight.value,
     };
-  }, []);
+  }, [velocity]);
 
   return (
     <Animated.View

@@ -16,6 +16,7 @@ export interface IProvider extends ITabView {
   animatedScrollValue: SharedValue<number>;
   animatedHeight: SharedValue<number>;
   scrollValueMap: SharedValue<{ [id: string]: number }>;
+  velocity: number;
 }
 
 export interface ITabView extends TabViewProps {

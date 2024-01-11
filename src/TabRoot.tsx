@@ -49,24 +49,7 @@ export const TabRoot = memo(function TabRoot({
   );
   const rootIndex = useSharedValue("0");
   const rootAnimatedIndex = useSharedValue("0");
-
-  const animatedHeight = useDerivedValue(() => {
-    // const val = Math.min(
-    //   0,
-    //   Math.max(
-    //     0 - animatedScrollValue.value,
-    //     barHeight.value - headerHeight.value,
-    //   ),
-    // );
-    //
-    // if (animatedScrollValue.value - prevVal.value > 200) {
-    //   return withTiming(val, {duration: 200});
-    // }
-    //
-    // prevVal.value = animatedScrollValue.value;
-
-    return Math.max(animatedScrollValue.value * velocity, 0);
-  }, [velocity]);
+  const animatedHeight = useSharedValue(0)
 
   const returnValue = useMemo(
     () => ({
@@ -83,9 +66,10 @@ export const TabRoot = memo(function TabRoot({
       minBarTop,
       rootIndex,
       rootAnimatedIndex,
+      velocity,
       ...tabViewValue,
     }),
-    [tabViewValue]
+    [tabViewValue, velocity]
   );
 
   return (
