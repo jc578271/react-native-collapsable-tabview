@@ -57,7 +57,7 @@ const AnimatedTabHeader = memo(function AnimatedTabHeader({
 
   const tabHeaderStyle = useAnimatedStyle(() => {
     return {
-      top: -animatedHeight.value,
+      top: Math.max(-animatedHeight.value, -headerHeight.value)
     };
   }, []);
 
