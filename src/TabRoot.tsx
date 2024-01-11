@@ -19,11 +19,13 @@ interface TabRootProps {
     header?: number;
     bar?: number;
   };
+  velocity?: number;
 }
 
 export const TabRoot = memo(function TabRoot({
   children,
   initialHeight,
+  velocity = 1
 }: TabRootProps) {
   /* get value same as TabView */
   const tabViewValue = _useTabView(true, initialHeight);
@@ -63,8 +65,8 @@ export const TabRoot = memo(function TabRoot({
     //
     // prevVal.value = animatedScrollValue.value;
 
-    return Math.max(animatedScrollValue.value, 0);
-  }, []);
+    return Math.max(animatedScrollValue.value * velocity, 0);
+  }, [velocity]);
 
   const returnValue = useMemo(
     () => ({
