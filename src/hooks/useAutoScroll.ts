@@ -39,7 +39,7 @@ export function useAutoScroll(
 
   const timeout = useRef<any>(null);
   const currentScrollValue = useSharedValue(0);
-  const isRunning = useSharedValue(0);
+  // const isRunning = useSharedValue(0);
 
   /* scroll handler */
   const onScroll = useAnimatedScrollHandler(
@@ -52,13 +52,13 @@ export function useAutoScroll(
           currentScrollValue.value = e.contentOffset.y * velocity;
 
           /* animatedHeight */
-          if (isRunning.value !== 0) return;
+          // if (isRunning.value !== 0) return;
           const val = Math.max(e.contentOffset.y * velocity, 0);
 
-          if (Math.abs(val - animatedHeight.value) > 30) {
+          if (Math.abs(val - animatedHeight.value) > 70) {
             animatedHeight.value = reanimatedSpring(val);
-            isRunning.value = 1;
-            isRunning.value = reanimatedSpring(0);
+            // isRunning.value = 1;
+            // isRunning.value = reanimatedSpring(0);
             return;
           }
 
