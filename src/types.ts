@@ -2,6 +2,7 @@ import type { SharedValue } from "react-native-reanimated";
 import type PagerView from "react-native-pager-view";
 import type { ReactNode, RefObject } from "react";
 import Animated from "react-native-reanimated";
+import type { NativeScrollEvent } from "react-native";
 
 export interface TabViewProps {
   label: string;
@@ -56,4 +57,12 @@ export enum ETabStatus {
   MOUNTED = 1,
   INVISIBLE = 2,
   VISIBLE = 3,
+}
+
+export interface IOnScroll {
+  onScroll: (event: NativeScrollEvent) => void;
+  onAnimatedBeginDrag: (event: NativeScrollEvent) => void;
+  onAnimatedEndDrag: (event: NativeScrollEvent) => void;
+  onAnimatedMomentumBegin: (event: NativeScrollEvent) => void;
+  onAnimatedMomentumEnd: (event: NativeScrollEvent) => void;
 }

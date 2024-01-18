@@ -12,7 +12,8 @@ import { type RefObject, useCallback, useRef } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { interactManager } from "../utils/interactManager";
 import type { LayoutChangeEvent } from "react-native";
-import { reanimatedSpring } from '../utils/reanimatedSpring';
+import { reanimatedSpring } from "../utils/reanimatedSpring";
+import type { IOnScroll } from "../types";
 
 interface IUseAutoScroll {
   onScroll: (e: any) => void;
@@ -22,7 +23,14 @@ interface IUseAutoScroll {
 }
 
 export function useAutoScroll(
-  ref: RefObject<Animated.ScrollView & FlashList<any>>
+  ref: RefObject<Animated.ScrollView & FlashList<any>>,
+  {
+    onScroll: pOnScroll,
+    onAnimatedMomentumBegin,
+    onAnimatedMomentumEnd,
+    onAnimatedEndDrag,
+    onAnimatedBeginDrag,
+  }: IOnScroll
 ): IUseAutoScroll {
   const { animatedScrollValue, animatedHeight, velocity } = useTabRoot();
   const { minBarTop, rootIndex, rootAnimatedIndex } = useTabView();
@@ -31,12 +39,13 @@ export function useAutoScroll(
 
   const timeout = useRef<any>(null);
   const currentScrollValue = useSharedValue(0);
-  const isRunning = useSharedValue(0)
+  const isRunning = useSharedValue(0);
 
   /* scroll handler */
   const onScroll = useAnimatedScrollHandler(
     {
       onScroll: (e) => {
+        pOnScroll(e);
         /* only set animatedScrollValue when current index */
         if (rootIndex.value === rootAnimatedIndex.value) {
           animatedScrollValue.value = e.contentOffset.y * velocity;
@@ -48,16 +57,27 @@ export function useAutoScroll(
 
           if (Math.abs(val - animatedHeight.value) > 30) {
             animatedHeight.value = reanimatedSpring(val);
-            isRunning.value = 1
-            isRunning.value = reanimatedSpring(0)
-            return
+            isRunning.value = 1;
+            isRunning.value = reanimatedSpring(0);
+            return;
           }
 
           animatedHeight.value = val;
         }
       },
+      onBeginDrag: onAnimatedBeginDrag,
+      onEndDrag: onAnimatedEndDrag,
+      onMomentumBegin: onAnimatedMomentumBegin,
+      onMomentumEnd: onAnimatedMomentumEnd,
     },
-    [velocity]
+    [
+      velocity,
+      pOnScroll,
+      onAnimatedBeginDrag,
+      onAnimatedEndDrag,
+      onAnimatedMomentumBegin,
+      onAnimatedMomentumEnd,
+    ]
   );
 
   /* auto scroll for other items */

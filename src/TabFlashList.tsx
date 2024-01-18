@@ -6,13 +6,16 @@ import Animated, {
 } from "react-native-reanimated";
 import { useTabView } from "./TabView";
 import { useAutoScroll } from "./hooks/useAutoScroll";
-import { View } from "react-native";
+import { View } from 'react-native';
 import { useTabRoot } from "./TabRoot";
+import type { IOnScroll } from './types';
 
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<any>>(RNFlashList);
 
-const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
+type TabViewFlashListProps = Omit<FlashListProps<any>, "onScroll"> & IOnScroll
+
+const TabViewFlashList = forwardRef<RNFlashList<any>, TabViewFlashListProps>(
   function TabViewFlashList(props, ref) {
     const { emptyHeaderHeight, minBarTop } = useTabView();
     const { velocity } = useTabRoot();
@@ -24,7 +27,8 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, FlashListProps<any>>(
     }, []);
 
     const { onScroll, scrollViewRef, listHeight, onListLayout } = useAutoScroll(
-      ref as any
+      ref as any,
+      props
     );
 
     const containerStyle = useAnimatedStyle(() => {
