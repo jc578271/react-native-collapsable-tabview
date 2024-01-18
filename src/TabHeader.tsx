@@ -47,7 +47,7 @@ const AnimatedTabHeader = memo(function AnimatedTabHeader({
 }: HeaderProps) {
   const { animatedHeight } = useTabRoot();
 
-  const { headerHeight, emptyHeaderHeight } = useTabView();
+  const { headerHeight, emptyHeaderHeight, minBarTop, barHeight } = useTabView();
 
   const emptyHeaderStyle = useAnimatedStyle(() => {
     return {
@@ -57,7 +57,7 @@ const AnimatedTabHeader = memo(function AnimatedTabHeader({
 
   const tabHeaderStyle = useAnimatedStyle(() => {
     return {
-      top: Math.max(-animatedHeight.value, -headerHeight.value)
+      top: Math.max(-animatedHeight.value, -minBarTop.value - barHeight.value)
     };
   }, []);
 
