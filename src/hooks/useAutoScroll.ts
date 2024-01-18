@@ -45,7 +45,7 @@ export function useAutoScroll(
   const onScroll = useAnimatedScrollHandler(
     {
       onScroll: (e) => {
-        pOnScroll(e);
+        pOnScroll?.(e);
         /* only set animatedScrollValue when current index */
         if (rootIndex.value === rootAnimatedIndex.value) {
           animatedScrollValue.value = e.contentOffset.y * velocity;

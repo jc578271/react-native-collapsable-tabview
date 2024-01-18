@@ -60,9 +60,9 @@ export enum ETabStatus {
 }
 
 export interface IOnScroll {
-  onScroll: (event: NativeScrollEvent) => void;
-  onAnimatedBeginDrag: (event: NativeScrollEvent) => void;
-  onAnimatedEndDrag: (event: NativeScrollEvent) => void;
-  onAnimatedMomentumBegin: (event: NativeScrollEvent) => void;
-  onAnimatedMomentumEnd: (event: NativeScrollEvent) => void;
+  onScroll?: (event: NativeScrollEvent) => void;
+  onAnimatedBeginDrag?: (event: NativeScrollEvent) => void;
+  onAnimatedEndDrag?: (event: NativeScrollEvent) => void;
+  onAnimatedMomentumBegin?: (event: NativeScrollEvent) => void;
+  onAnimatedMomentumEnd?: (event: NativeScrollEvent) => void;
 }
