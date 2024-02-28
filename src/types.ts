@@ -68,3 +68,7 @@ export interface IOnScroll {
   onAnimatedMomentumBegin?: (event: NativeScrollEvent) => void;
   onAnimatedMomentumEnd?: (event: NativeScrollEvent) => void;
 }
+
+export interface IScrollProps {
+  disabledMinHeight?: boolean;
+}
