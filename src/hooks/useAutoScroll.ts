@@ -11,7 +11,11 @@ import { useTabView } from "../TabView";
 import { type RefObject, useCallback, useRef } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { interactManager } from "../utils/interactManager";
-import type { LayoutChangeEvent } from "react-native";
+import type {
+  LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native";
 import { reanimatedSpring } from "../utils/reanimatedSpring";
 import type { IOnScroll } from "../types";
 
@@ -26,6 +30,7 @@ export function useAutoScroll(
   ref: RefObject<Animated.ScrollView & FlashList<any>>,
   {
     onScroll: pOnScroll,
+    onAnimatedScroll,
     onAnimatedMomentumBegin,
     onAnimatedMomentumEnd,
     onAnimatedEndDrag,
@@ -41,11 +46,19 @@ export function useAutoScroll(
   const currentScrollValue = useSharedValue(0);
   // const isRunning = useSharedValue(0);
 
+  const _onScroll = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      pOnScroll?.(e);
+    },
+    []
+  );
+
   /* scroll handler */
   const onScroll = useAnimatedScrollHandler(
     {
       onScroll: (e) => {
-        pOnScroll?.(e);
+        runOnJS(_onScroll)({ nativeEvent: e } as any);
+        onAnimatedScroll?.(e);
         /* only set animatedScrollValue when current index */
         if (rootIndex.value === rootAnimatedIndex.value) {
           animatedScrollValue.value = e.contentOffset.y * velocity;
@@ -73,6 +86,7 @@ export function useAutoScroll(
     [
       velocity,
       pOnScroll,
+      onAnimatedScroll,
       onAnimatedBeginDrag,
       onAnimatedEndDrag,
       onAnimatedMomentumBegin,
