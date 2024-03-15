@@ -59,12 +59,15 @@ export const TabBar = memo(function TabBar({
   );
 
   const outputLeftRange = useDerivedValue(
-    () => Object.values(itemLayout.value).map((i) => i.left + _gap),
+    () => Object.values(itemLayout.value).map((i, index) => index === 0 ? i.left : i.left + _gap),
     [itemLayout, _gap]
   );
 
   const outputWidthRange = useDerivedValue(
-    () => Object.values(itemLayout.value).map((i) => i.width - 2 * _gap),
+    () => Object.values(itemLayout.value).map((i, index) => {
+      if (index === 0) return i.width;
+      return i.width - 2 * _gap
+    }),
     [itemLayout, _gap]
   );
 
@@ -113,7 +116,7 @@ export const TabBar = memo(function TabBar({
             )
           : 0,
     };
-  }, [horizontalGap]);
+  }, [_gap]);
 
   const animatedContainerStyle = useAnimatedStyle(
     () =>
