@@ -27,7 +27,7 @@ export const TabBarContainer = memo(function TabBarContainer({
 
   const tabBarStyle = useAnimatedStyle(() => {
     const top = Math.min(animatedHeight.value, minBarTop.value);
-    const isVisible = animatedHeight.value > minBarTop.value;
+    const isVisible = animatedHeight.value >= minBarTop.value;
     const minTop = emptyHeaderHeight.value - emptyBarHeight.value;
 
     const collapseValue = interpolate(
