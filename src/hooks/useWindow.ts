@@ -19,7 +19,13 @@ export const useWindow = () => {
   );
 
   useEffect(() => {
-    Dimensions.addEventListener("change", runOnUI(handleWindow));
+    let dimensions = Dimensions.addEventListener(
+      "change",
+      runOnUI(handleWindow)
+    );
+    return () => {
+      dimensions.remove();
+    };
   }, []);
 
   const width = useDerivedValue(
