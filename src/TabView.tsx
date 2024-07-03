@@ -5,6 +5,7 @@ import React, {
   useContext,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import type { IExternalTabView, ITabView, TabViewProps } from "./types";
 import { ETabStatus } from "./types";
@@ -19,6 +20,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import { ROOT_ID } from "./constant";
+import { interactManager } from "./utils/interactManager";
 
 const Context = createContext<ITabView | null>(null);
 const ExternalContext = createContext<IExternalTabView | null>(null);
@@ -110,7 +112,9 @@ export const TabView = memo(function TabItem({
   const statusHandler = useRef<((status: ETabStatus) => void) | null>(null);
   const statusDeps = useRef<any[]>([]);
 
-  const { animatedHeight } = useTabRoot();
+  const { animatedHeight, mountViewWhenVisible } = useTabRoot();
+
+  const [mounted, setMounted] = useState(!mountViewWhenVisible || false);
 
   const externalHeaderHeight = useDerivedValue(
     () =>
@@ -121,9 +125,18 @@ export const TabView = memo(function TabItem({
     []
   );
 
-  const jsCallback = useCallback((status: ETabStatus) => {
-    statusHandler.current?.(status);
-  }, statusDeps.current);
+  const jsCallback = useCallback(
+    (status: ETabStatus) => {
+      if (mountViewWhenVisible && status === ETabStatus.MOUNTED) {
+        setMounted(true);
+        interactManager(() => statusHandler.current?.(status), 100);
+        return;
+      }
+      statusHandler.current?.(status);
+      return;
+    },
+    [...statusDeps.current, mountViewWhenVisible]
+  );
 
   const onStatusChange = useCallback(
     (handler: (status: ETabStatus) => void, deps?: any[]) => {
@@ -152,7 +165,7 @@ export const TabView = memo(function TabItem({
         runOnJS(jsCallback)(ETabStatus.INVISIBLE);
       }
     },
-    statusDeps.current
+    [...statusDeps.current, mountViewWhenVisible]
   );
 
   const externalValue = useMemo(
@@ -169,7 +182,7 @@ export const TabView = memo(function TabItem({
     return (
       <Context.Provider value={returnValue}>
         <ExternalContext.Provider value={externalValue}>
-          {children}
+          {mounted ? children : null}
         </ExternalContext.Provider>
       </Context.Provider>
     );
@@ -179,7 +192,7 @@ export const TabView = memo(function TabItem({
     <Animated.View style={animatedStyle}>
       <Context.Provider value={returnValue}>
         <ExternalContext.Provider value={externalValue}>
-          {children}
+          {mounted ? children : null}
         </ExternalContext.Provider>
       </Context.Provider>
     </Animated.View>

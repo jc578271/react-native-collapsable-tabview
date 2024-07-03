@@ -20,12 +20,14 @@ interface TabRootProps {
     bar?: number;
   };
   velocity?: number;
+  mountViewWhenVisible?: boolean;
 }
 
 export const TabRoot = memo(function TabRoot({
   children,
   initialHeight,
-  velocity = 1
+  velocity = 1,
+  mountViewWhenVisible,
 }: TabRootProps) {
   /* get value same as TabView */
   const tabViewValue = _useTabView(true, initialHeight);
@@ -49,7 +51,7 @@ export const TabRoot = memo(function TabRoot({
   );
   const rootIndex = useSharedValue("0");
   const rootAnimatedIndex = useSharedValue("0");
-  const animatedHeight = useSharedValue(0)
+  const animatedHeight = useSharedValue(0);
 
   const returnValue = useMemo(
     () => ({
@@ -67,9 +69,10 @@ export const TabRoot = memo(function TabRoot({
       rootIndex,
       rootAnimatedIndex,
       velocity,
+      mountViewWhenVisible,
       ...tabViewValue,
     }),
-    [tabViewValue, velocity]
+    [tabViewValue, velocity, mountViewWhenVisible]
   );
 
   return (
