@@ -8,7 +8,7 @@ import { useAutoScroll } from "./hooks/useAutoScroll";
 import { View, type ScrollViewProps } from "react-native";
 import type { IOnScroll, IScrollProps } from './types';
 
-type TabScrollViewProps = Omit<AnimateProps<ScrollViewProps>, "onScroll"> & IOnScroll & IScrollProps
+export type TabScrollViewProps = Omit<AnimateProps<ScrollViewProps>, "onScroll"> & IOnScroll & IScrollProps
 
 const _TabScrollView = forwardRef<Animated.ScrollView, TabScrollViewProps>(
   function TabScrollView({ children, ...props }, ref) {

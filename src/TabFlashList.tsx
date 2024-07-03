@@ -13,7 +13,7 @@ import type { IOnScroll, IScrollProps } from './types';
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<any>>(RNFlashList);
 
-type TabViewFlashListProps = Omit<FlashListProps<any>, "onScroll"> & IOnScroll & IScrollProps
+export type TabViewFlashListProps = Omit<FlashListProps<any>, "onScroll"> & IOnScroll & IScrollProps
 
 const TabViewFlashList = forwardRef<RNFlashList<any>, TabViewFlashListProps>(
   function TabViewFlashList(props, ref) {
