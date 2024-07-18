@@ -117,26 +117,32 @@ export function useAutoScroll(
     return Math.max(Math.min(animatedScrollValue.value, minBarTop.value), 0);
   }, []);
 
-  const scrollToCurrentOffset = useCallback((animatedScrollValue: number) => {
-    /* scroll other scrollView when value is changed */
-    if (rootIndex.value !== rootAnimatedIndex.value) {
+  const scrollToCurrentOffset = useCallback(
+    (animatedScrollValue: number, scrollCurrent?: boolean) => {
+      /* scroll other scrollView when value is changed */
       if (
-        _animatedHeight.value >= currentScrollValue.value ||
-        currentScrollValue.value <= minBarTop.value ||
-        currentScrollValue.value === 0
+        (scrollCurrent && rootIndex.value === rootAnimatedIndex.value) ||
+        rootIndex.value !== rootAnimatedIndex.value
       ) {
-        autoScroll(Math.min(animatedScrollValue, minBarTop.value));
-      } else {
-        autoScroll(
-          currentScrollValue.value + _animatedHeight.value - minBarTop.value
-        );
+        if (
+          _animatedHeight.value >= currentScrollValue.value ||
+          currentScrollValue.value <= minBarTop.value ||
+          currentScrollValue.value === 0
+        ) {
+          autoScroll(Math.min(animatedScrollValue, minBarTop.value));
+        } else {
+          autoScroll(
+            currentScrollValue.value + _animatedHeight.value - minBarTop.value
+          );
+        }
       }
-    }
-  }, []);
+    },
+    []
+  );
 
   /* first mount */
   useEffect(() => {
-    scrollToCurrentOffset(animatedScrollValue.value);
+    scrollToCurrentOffset(animatedScrollValue.value, true);
   }, []);
 
   /* handle auto scroll */
