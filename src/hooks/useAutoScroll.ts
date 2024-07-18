@@ -8,7 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useTabRoot } from "../TabRoot";
 import { useTabView } from "../TabView";
-import { type RefObject, useCallback, useRef } from "react";
+import { type RefObject, useCallback, useEffect, useRef } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { interactManager } from "../utils/interactManager";
 import type {
@@ -117,24 +117,33 @@ export function useAutoScroll(
     return Math.max(Math.min(animatedScrollValue.value, minBarTop.value), 0);
   }, []);
 
+  const scrollToCurrentOffset = useCallback((animatedScrollValue: number) => {
+    /* scroll other scrollView when value is changed */
+    if (rootIndex.value !== rootAnimatedIndex.value) {
+      if (
+        _animatedHeight.value >= currentScrollValue.value ||
+        currentScrollValue.value <= minBarTop.value ||
+        currentScrollValue.value === 0
+      ) {
+        autoScroll(Math.min(animatedScrollValue, minBarTop.value));
+      } else {
+        autoScroll(
+          currentScrollValue.value + _animatedHeight.value - minBarTop.value
+        );
+      }
+    }
+  }, []);
+
+  /* first mount */
+  useEffect(() => {
+    scrollToCurrentOffset(animatedScrollValue.value);
+  }, []);
+
   /* handle auto scroll */
   useAnimatedReaction(
     () => animatedScrollValue.value,
     (animatedScrollValue) => {
-      /* scroll other scrollView when value is changed */
-      if (rootIndex.value !== rootAnimatedIndex.value) {
-        if (
-          _animatedHeight.value >= currentScrollValue.value ||
-          currentScrollValue.value <= minBarTop.value ||
-          currentScrollValue.value === 0
-        ) {
-          runOnJS(autoScroll)(Math.min(animatedScrollValue, minBarTop.value));
-        } else {
-          runOnJS(autoScroll)(
-            currentScrollValue.value + _animatedHeight.value - minBarTop.value
-          );
-        }
-      }
+      runOnJS(scrollToCurrentOffset)(animatedScrollValue);
     },
     []
   );
