@@ -1,5 +1,6 @@
 import Animated, {
   runOnJS,
+  runOnUI,
   type SharedValue,
   useAnimatedReaction,
   useAnimatedScrollHandler,
@@ -105,7 +106,7 @@ export function useAutoScroll(
           });
           scrollViewRef.current?.scrollTo?.({ y: value, animated: false });
         },
-        100,
+        300,
         timeout
       );
     },
@@ -119,6 +120,7 @@ export function useAutoScroll(
 
   const scrollToCurrentOffset = useCallback(
     (animatedScrollValue: number, scrollCurrent?: boolean) => {
+      "worklet";
       /* scroll other scrollView when value is changed */
       if (
         (scrollCurrent && rootIndex.value === rootAnimatedIndex.value) ||
@@ -129,9 +131,9 @@ export function useAutoScroll(
           currentScrollValue.value <= minBarTop.value ||
           currentScrollValue.value === 0
         ) {
-          autoScroll(Math.min(animatedScrollValue, minBarTop.value));
+          runOnJS(autoScroll)(Math.min(animatedScrollValue, minBarTop.value));
         } else {
-          autoScroll(
+          runOnJS(autoScroll)(
             currentScrollValue.value + _animatedHeight.value - minBarTop.value
           );
         }
@@ -142,14 +144,14 @@ export function useAutoScroll(
 
   /* first mount */
   useEffect(() => {
-    scrollToCurrentOffset(animatedScrollValue.value, true);
+    runOnUI(scrollToCurrentOffset)(animatedScrollValue.value, true);
   }, []);
 
   /* handle auto scroll */
   useAnimatedReaction(
     () => animatedScrollValue.value,
     (animatedScrollValue) => {
-      runOnJS(scrollToCurrentOffset)(animatedScrollValue);
+      scrollToCurrentOffset(animatedScrollValue);
     },
     []
   );
