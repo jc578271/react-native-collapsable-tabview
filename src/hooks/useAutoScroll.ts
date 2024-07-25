@@ -6,12 +6,13 @@ import Animated, {
   useAnimatedScrollHandler,
   useDerivedValue,
   useSharedValue,
+  withDelay,
+  withTiming,
 } from "react-native-reanimated";
 import { useTabRoot } from "../TabRoot";
 import { useTabView } from "../TabView";
 import { type RefObject, useCallback, useEffect, useRef } from "react";
 import { FlashList } from "@shopify/flash-list";
-import { interactManager } from "../utils/interactManager";
 import type {
   LayoutChangeEvent,
   NativeScrollEvent,
@@ -43,9 +44,7 @@ export function useAutoScroll(
   const scrollViewRef =
     ref || useRef<Animated.ScrollView & FlashList<any>>(null);
 
-  const timeout = useRef<any>(null);
   const currentScrollValue = useSharedValue(0);
-  // const isRunning = useSharedValue(0);
 
   const _onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -98,17 +97,11 @@ export function useAutoScroll(
   /* auto scroll for other items */
   const autoScroll = useCallback(
     (value: number) => {
-      interactManager(
-        () => {
-          scrollViewRef.current?.scrollToOffset?.({
-            offset: value,
-            animated: false,
-          });
-          scrollViewRef.current?.scrollTo?.({ y: value, animated: false });
-        },
-        300,
-        timeout
-      );
+      scrollViewRef.current?.scrollToOffset?.({
+        offset: value,
+        animated: false,
+      });
+      scrollViewRef.current?.scrollTo?.({ y: value, animated: false });
     },
     [scrollViewRef]
   );
@@ -147,11 +140,23 @@ export function useAutoScroll(
     runOnUI(scrollToCurrentOffset)(animatedScrollValue.value, true);
   }, []);
 
+  const isRunning = useSharedValue(0);
+
   /* handle auto scroll */
   useAnimatedReaction(
-    () => animatedScrollValue.value,
-    (animatedScrollValue) => {
-      scrollToCurrentOffset(animatedScrollValue);
+    () => _animatedHeight.value,
+    () => {
+      isRunning.value = 1;
+      isRunning.value = withDelay(400, withTiming(0, { duration: 0 }));
+    },
+    []
+  );
+
+  useAnimatedReaction(
+    () => isRunning.value,
+    (isRunning) => {
+      if (isRunning) return;
+      scrollToCurrentOffset(animatedScrollValue.value);
     },
     []
   );
