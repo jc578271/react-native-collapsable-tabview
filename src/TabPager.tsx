@@ -101,6 +101,11 @@ const Pager = memo(
   }: TabPagerProps) => {
     const { animatedIndex, staticIndex, pagerViewRef } = useTabView();
 
+    /* set init page */
+    useEffect(() => {
+      animatedIndex.value = getValue(initialPage);
+    }, [initialPage]);
+
     const onScroll = usePageScrollHandler(
       {
         onPageScroll: (e: any) => {
@@ -153,6 +158,11 @@ const Scroll = memo(
     initialPage = 0,
   }: TabPagerProps) => {
     const { animatedIndex, staticIndex, pagerViewRef } = useTabView();
+
+    /* set init page */
+    useEffect(() => {
+      animatedIndex.value = getValue(initialPage);
+    }, [initialPage]);
 
     const { width } = useWindow();
 
