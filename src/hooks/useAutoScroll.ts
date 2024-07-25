@@ -20,6 +20,9 @@ import type {
 } from "react-native";
 import { reanimatedSpring } from "../utils/reanimatedSpring";
 import type { IOnScroll } from "../types";
+import { interactManager } from "../utils/interactManager";
+
+const DELAY_SCROLL = 400;
 
 interface IUseAutoScroll {
   onScroll: (e: any) => void;
@@ -137,7 +140,9 @@ export function useAutoScroll(
 
   /* first mount */
   useEffect(() => {
-    runOnUI(scrollToCurrentOffset)(animatedScrollValue.value, true);
+    interactManager(() => {
+      runOnUI(scrollToCurrentOffset)(animatedScrollValue.value, true);
+    }, DELAY_SCROLL);
   }, []);
 
   const isRunning = useSharedValue(0);
@@ -147,7 +152,7 @@ export function useAutoScroll(
     () => _animatedHeight.value,
     () => {
       isRunning.value = 1;
-      isRunning.value = withDelay(400, withTiming(0, { duration: 0 }));
+      isRunning.value = withDelay(DELAY_SCROLL, withTiming(0, { duration: 0 }));
     },
     []
   );
