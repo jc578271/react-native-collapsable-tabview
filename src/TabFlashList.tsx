@@ -1,19 +1,22 @@
-import React, { forwardRef, memo } from "react";
+import React, { forwardRef, memo, useCallback, useMemo } from "react";
 import RNFlashList, { type FlashListProps } from "./components/RNFlashList";
 import Animated, {
   type SharedValue,
   useAnimatedStyle,
+  useSharedValue,
 } from "react-native-reanimated";
 import { useTabView } from "./TabView";
 import { useAutoScroll } from "./hooks/useAutoScroll";
-import { View } from 'react-native';
+import { View } from "react-native";
 import { useTabRoot } from "./TabRoot";
-import type { IOnScroll, IScrollProps } from './types';
+import type { IOnScroll, IScrollProps } from "./types";
 
 const AnimatedFlashList =
   Animated.createAnimatedComponent<FlashListProps<any>>(RNFlashList);
 
-export type TabViewFlashListProps = Omit<FlashListProps<any>, "onScroll"> & IOnScroll & IScrollProps
+export type TabViewFlashListProps = Omit<FlashListProps<any>, "onScroll"> &
+  IOnScroll &
+  IScrollProps;
 
 const TabViewFlashList = forwardRef<RNFlashList<any>, TabViewFlashListProps>(
   function TabViewFlashList(props, ref) {
@@ -31,12 +34,31 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, TabViewFlashListProps>(
       props
     );
 
+    const paddingBottom = useMemo(() => {
+      if (typeof props.contentContainerStyle?.paddingBottom === "number")
+        return props.contentContainerStyle?.paddingBottom;
+
+      if (typeof props.contentContainerStyle?.paddingHorizontal === "number")
+        return props.contentContainerStyle?.paddingHorizontal;
+
+      return 0;
+    }, [
+      props.contentContainerStyle?.paddingBottom,
+      props.contentContainerStyle?.paddingHorizontal,
+    ]);
+
+    const footerHeight = useSharedValue(0);
+
     const containerStyle = useAnimatedStyle(() => {
-      const minHeight = listHeight.value + minBarTop.value / velocity;
+      const minHeight =
+        listHeight.value +
+        minBarTop.value / velocity -
+        paddingBottom -
+        footerHeight.value;
       return {
         minHeight: minHeight,
       };
-    });
+    }, [paddingBottom]);
 
     return (
       <View style={{ flex: 1, overflow: "scroll" }} onLayout={onListLayout}>
@@ -57,7 +79,18 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, TabViewFlashListProps>(
               </EmptyView>
             ) : null
           }
-          animatedContentContainerStyle={props.disabledMinHeight ? undefined : containerStyle}
+          ListFooterComponent={
+            <View
+              onLayout={useCallback((e) => {
+                footerHeight.value = e.nativeEvent.layout.height;
+              }, [])}
+            >
+              {props.ListFooterComponent}
+            </View>
+          }
+          animatedContentContainerStyle={
+            props.disabledMinHeight ? undefined : containerStyle
+          }
         />
       </View>
     );
@@ -76,7 +109,10 @@ const EmptyView = memo(function EmptyView({
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      top: -listHeight.value - minBarTop.value / velocity + emptyHeaderHeight.value,
+      top:
+        -listHeight.value -
+        minBarTop.value / velocity +
+        emptyHeaderHeight.value,
     };
   }, [velocity]);
 
