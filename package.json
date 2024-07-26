@@ -1,6 +1,6 @@
 {
   "name": "react-native-collapsable-tabview",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "This is collapsable tabview package",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
