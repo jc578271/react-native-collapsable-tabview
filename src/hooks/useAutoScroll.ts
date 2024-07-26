@@ -22,7 +22,7 @@ import { reanimatedSpring } from "../utils/reanimatedSpring";
 import type { IOnScroll } from "../types";
 import { interactManager } from "../utils/interactManager";
 
-const DELAY_SCROLL = 400;
+const DELAY_SCROLL = 100;
 
 interface IUseAutoScroll {
   onScroll: (e: any) => void;
