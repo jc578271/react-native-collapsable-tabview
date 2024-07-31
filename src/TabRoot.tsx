@@ -21,6 +21,7 @@ interface TabRootProps {
   };
   velocity?: number;
   mountViewWhenVisible?: boolean;
+  autoScrollDelay?: number;
 }
 
 export const TabRoot = memo(function TabRoot({
@@ -28,6 +29,7 @@ export const TabRoot = memo(function TabRoot({
   initialHeight,
   velocity = 1,
   mountViewWhenVisible,
+  autoScrollDelay,
 }: TabRootProps) {
   /* get value same as TabView */
   const tabViewValue = _useTabView(true, initialHeight);
@@ -70,9 +72,10 @@ export const TabRoot = memo(function TabRoot({
       rootAnimatedIndex,
       velocity,
       mountViewWhenVisible,
+      autoScrollDelay,
       ...tabViewValue,
     }),
-    [tabViewValue, velocity, mountViewWhenVisible]
+    [tabViewValue, velocity, mountViewWhenVisible, autoScrollDelay]
   );
 
   return (

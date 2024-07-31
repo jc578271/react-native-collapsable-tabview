@@ -20,6 +20,7 @@ export interface IProvider extends ITabView {
   scrollValueMap: SharedValue<{ [id: string]: number }>;
   velocity: number;
   mountViewWhenVisible?: boolean;
+  autoScrollDelay?: number;
 }
 
 export interface ITabView extends TabViewProps {

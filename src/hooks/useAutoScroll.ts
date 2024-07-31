@@ -22,7 +22,7 @@ import { reanimatedSpring } from "../utils/reanimatedSpring";
 import type { IOnScroll } from "../types";
 import { interactManager } from "../utils/interactManager";
 
-const DELAY_SCROLL = 100;
+const DELAY_SCROLL = 300;
 
 interface IUseAutoScroll {
   onScroll: (e: any) => void;
@@ -42,7 +42,12 @@ export function useAutoScroll(
     onAnimatedBeginDrag,
   }: IOnScroll
 ): IUseAutoScroll {
-  const { animatedScrollValue, animatedHeight, velocity } = useTabRoot();
+  const {
+    animatedScrollValue,
+    animatedHeight,
+    velocity,
+    autoScrollDelay = DELAY_SCROLL,
+  } = useTabRoot();
   const { minBarTop, rootIndex, rootAnimatedIndex } = useTabView();
   const scrollViewRef =
     ref || useRef<Animated.ScrollView & FlashList<any>>(null);
@@ -150,11 +155,14 @@ export function useAutoScroll(
   /* handle auto scroll */
   useAnimatedReaction(
     () => _animatedHeight.value,
-    () => {
+    (_) => {
       isRunning.value = 1;
-      isRunning.value = withDelay(DELAY_SCROLL, withTiming(0, { duration: 0 }));
+      isRunning.value = withDelay(
+        autoScrollDelay,
+        withTiming(0, { duration: 0 })
+      );
     },
-    []
+    [autoScrollDelay]
   );
 
   useAnimatedReaction(
