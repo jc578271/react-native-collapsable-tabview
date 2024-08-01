@@ -147,7 +147,7 @@ export function useAutoScroll(
   useEffect(() => {
     interactManager(() => {
       runOnUI(scrollToCurrentOffset)(animatedScrollValue.value, true);
-    }, 10);
+    }, 100);
   }, []);
 
   const isRunning = useSharedValue(0);
