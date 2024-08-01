@@ -21,6 +21,7 @@ export interface IProvider extends ITabView {
   velocity: number;
   mountViewWhenVisible?: boolean;
   autoScrollDelay?: number;
+  firstScrollDelay?: number;
 }
 
 export interface ITabView extends TabViewProps {

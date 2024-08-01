@@ -23,6 +23,7 @@ import type { IOnScroll } from "../types";
 import { interactManager } from "../utils/interactManager";
 
 const DELAY_SCROLL = 300;
+const FIRST_DELAY_SCROLL = 100;
 
 interface IUseAutoScroll {
   onScroll: (e: any) => void;
@@ -47,6 +48,7 @@ export function useAutoScroll(
     animatedHeight,
     velocity,
     autoScrollDelay = DELAY_SCROLL,
+    firstScrollDelay = FIRST_DELAY_SCROLL,
   } = useTabRoot();
   const { minBarTop, rootIndex, rootAnimatedIndex } = useTabView();
   const scrollViewRef =
@@ -147,7 +149,7 @@ export function useAutoScroll(
   useEffect(() => {
     interactManager(() => {
       runOnUI(scrollToCurrentOffset)(animatedScrollValue.value, true);
-    }, 100);
+    }, firstScrollDelay);
   }, []);
 
   const isRunning = useSharedValue(0);
