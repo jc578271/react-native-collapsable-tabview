@@ -128,8 +128,10 @@ export const TabView = memo(function TabItem({
   const jsCallback = useCallback(
     (status: ETabStatus) => {
       if (mountViewWhenVisible && status === ETabStatus.MOUNTED) {
-        setMounted(true);
-        interactManager(() => statusHandler.current?.(status), 100);
+        interactManager(() => {
+          setMounted(true);
+          statusHandler.current?.(status)
+        }, 150);
         return;
       }
       statusHandler.current?.(status);

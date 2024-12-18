@@ -29,7 +29,7 @@ export const TabRoot = memo(function TabRoot({
   children,
   initialHeight,
   velocity = 1,
-  mountViewWhenVisible,
+  mountViewWhenVisible = true,
   autoScrollDelay,
   firstScrollDelay,
 }: TabRootProps) {

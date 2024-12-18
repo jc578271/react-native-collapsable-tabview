@@ -45,7 +45,7 @@ export const TabBarContainer = memo(function TabBarContainer({
   }, [onCollapse]);
 
   const tabBarProps: any = useAnimatedProps(() => {
-    const isVisible = animatedHeight.value > minBarTop.value;
+    const isVisible = animatedHeight.value >= minBarTop.value;
     return {
       pointerEvents: isVisible ? "auto" : "none",
     };
