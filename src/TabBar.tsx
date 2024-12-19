@@ -134,6 +134,7 @@ export const TabBar = memo(function TabBar({
     <Animated.ScrollView
       showsHorizontalScrollIndicator={false}
       horizontal={true}
+      bounces={false}
       contentContainerStyle={contentContainerStyle}
       ref={barRef as any}
     >
