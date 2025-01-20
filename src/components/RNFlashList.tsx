@@ -837,7 +837,7 @@ class FlashList<T> extends React.PureComponent<
     viewPosition?: number | undefined;
     viewOffset?: number | undefined;
   }) {
-    const index = this.props.data?.indexOf(params.item) ?? -1;
+    const index = this.props?.data?.indexOf?.(params.item) || -1;
     if (index >= 0) {
       this.scrollToIndex({ ...params, index });
     }

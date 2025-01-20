@@ -77,7 +77,7 @@ export const TabView = memo(function TabItem({
   );
 
   const rootIndex = useDerivedValue(() => {
-    return parentRootIndex.value + "" + tabs.value.indexOf(label);
+    return parentRootIndex.value + "" + (tabs.value?.indexOf?.(label) || "");
   }, [label]);
   const rootAnimatedIndex = useDerivedValue(
     () =>
