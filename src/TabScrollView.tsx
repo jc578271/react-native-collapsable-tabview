@@ -36,8 +36,8 @@ const _TabScrollView = forwardRef<Animated.ScrollView, TabScrollViewProps>(
       <View style={{ flex: 1, overflow: "scroll" }} onLayout={onListLayout}>
         <Animated.ScrollView ref={scrollViewRef} {...props} onScroll={onScroll}>
           <Animated.View style={props.disabledMinHeight ? undefined : containerStyle}>
-            <Animated.View style={animatedStyle} />
-            {children}
+            {/* <Animated.View style={animatedStyle} /> */}
+            {children as any}
           </Animated.View>
         </Animated.ScrollView>
       </View>

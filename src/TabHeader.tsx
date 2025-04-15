@@ -36,7 +36,7 @@ export const TabHeader = memo(function TabHeader({
         {HeaderComponent}
         <View {...rest} />
       </AnimatedTabHeader>
-      {isStickyBar ? <TabBarContainer {...rest} /> : null}
+      {/* {isStickyBar ? <TabBarContainer {...rest} /> : null} */}
     </>
   );
 });
@@ -72,9 +72,9 @@ const AnimatedTabHeader = memo(function AnimatedTabHeader({
   return (
     <Animated.View
       pointerEvents={"box-none"}
-      style={[styles.header, tabHeaderStyle]}
+      // style={[styles.header, tabHeaderStyle]}
     >
-      <Animated.View pointerEvents={"box-none"} style={emptyHeaderStyle} />
+      {/* <Animated.View pointerEvents={"box-none"} style={emptyHeaderStyle} /> */}
       <Animated.View
         pointerEvents={"box-none"}
         style={{ overflow: "scroll" }}

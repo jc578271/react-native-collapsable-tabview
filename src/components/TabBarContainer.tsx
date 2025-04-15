@@ -68,10 +68,10 @@ export const TabBarContainer = memo(function TabBarContainer({
 
   return (
     <Animated.View
-      animatedProps={tabBarProps}
-      style={[styles.bar, tabBarStyle]}
+      // animatedProps={tabBarProps}
+      // style={[styles.bar, tabBarStyle]}
     >
-      <Animated.View style={emptyBarStyle} />
+      {/* <Animated.View style={emptyBarStyle} /> */}
       <View {...props} onLayout={onLayout} />
     </Animated.View>
   );

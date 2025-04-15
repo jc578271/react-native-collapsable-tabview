@@ -14,5 +14,5 @@ export const TabRefreshControl = memo(function TabRefreshControl(
     progressViewOffset: emptyHeaderHeight.value,
   }));
 
-  return <AnimatedRefreshControl animatedProps={animatedProps} {...props} />;
+  return <AnimatedRefreshControl {...props} />;
 });

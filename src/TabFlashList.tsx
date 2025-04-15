@@ -54,7 +54,7 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, TabViewFlashListProps>(
         listHeight.value +
         minBarTop.value / velocity -
         paddingBottom -
-        footerHeight.value;
+        footerHeight.value - 16;
       return {
         minHeight: minHeight,
       };
@@ -66,31 +66,31 @@ const TabViewFlashList = forwardRef<RNFlashList<any>, TabViewFlashListProps>(
           ref={scrollViewRef}
           {...props}
           onScroll={onScroll}
-          ListHeaderComponent={
-            <>
-              <Animated.View style={animatedStyle} />
-              {props.ListHeaderComponent}
-            </>
-          }
-          ListEmptyComponent={
-            props.ListEmptyComponent ? (
-              <EmptyView listHeight={listHeight}>
-                {props.ListEmptyComponent}
-              </EmptyView>
-            ) : null
-          }
-          ListFooterComponent={
-            <View
-              onLayout={useCallback((e) => {
-                footerHeight.value = e.nativeEvent.layout.height;
-              }, [])}
-            >
-              {props.ListFooterComponent}
-            </View>
-          }
-          animatedContentContainerStyle={
-            props.disabledMinHeight ? undefined : containerStyle
-          }
+          // ListHeaderComponent={
+          //   <>
+          //     <Animated.View style={animatedStyle} />
+          //     {props.ListHeaderComponent as any}
+          //   </>
+          // }
+          // ListEmptyComponent={
+          //   props.ListEmptyComponent ? (
+          //     <EmptyView listHeight={listHeight}>
+          //       {props.ListEmptyComponent}
+          //     </EmptyView>
+          //   ) : null
+          // }
+          // // ListFooterComponent={
+          //   <View
+          //     onLayout={useCallback((e: any) => {
+          //       footerHeight.value = e.nativeEvent.layout.height;
+          //     }, [])}
+          //   >
+          //     {props.ListFooterComponent as any}
+          //   </View>
+          // }
+          // animatedContentContainerStyle={
+          //   props.disabledMinHeight ? undefined : containerStyle
+          // }
         />
       </View>
     );
