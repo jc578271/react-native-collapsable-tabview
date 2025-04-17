@@ -1,13 +1,9 @@
 {
   "name": "react-native-collapsable-tabview",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "private": true,
   "description": "This is collapsable tabview package",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
-  "react-native": "src/index",
-  "source": "src/index",
+  "main": "src/index.tsx",
   "files": [
     "src",
     "lib",
@@ -32,7 +28,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
-    "prepare": "bob build",
+    "build": "bob build",
     "release": "release-it"
   },
   "keywords": [
