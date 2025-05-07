@@ -67,7 +67,7 @@
     "react-native-pager-view": "6.5.1",
     "react-native-reanimated": "3.16.7",
     "release-it": "^15.0.0",
-    "typescript": "5.8.3"
+    "typescript": "5.0.4"
   },
   "resolutions": {
     "@types/react": "18.2.6"
