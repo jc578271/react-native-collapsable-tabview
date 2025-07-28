@@ -18,6 +18,7 @@ export interface TabBarContainerProps extends ViewProps {
 export const TabBarContainer = memo(function TabBarContainer({
   onCollapse,
   onBarHeight,
+  children,
   ...props
 }: TabBarContainerProps) {
   const { animatedHeight } = useTabRoot();
@@ -72,7 +73,7 @@ export const TabBarContainer = memo(function TabBarContainer({
       // style={[styles.bar, tabBarStyle]}
     >
       {/* <Animated.View style={emptyBarStyle} /> */}
-      <View {...props} onLayout={onLayout} />
+      <View {...props} onLayout={onLayout}>{children}</View>
     </Animated.View>
   );
 });
